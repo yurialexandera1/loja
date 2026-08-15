@@ -3,7 +3,7 @@
 {% block description %}{{ post.excerpt|default:post.body|striptags|truncatewords:30 }}{% endblock %}
 
 {% block content %}
-<div class="wrap band">
+<div class="wrap band" style="max-width:var(--container-narrow)">
   <div class="crumbs" style="margin-bottom:18px"><a href="{% url 'store:blog_lista' %}">Blog</a> <span>›</span> {{ post.title }}</div>
   <span class="eyebrow">{{ post.created_at|date:"d/m/Y" }}</span>
   <h1 style="margin-top:10px; max-width:34ch">{{ post.title }}</h1>
