@@ -1,0 +1,24 @@
+{% load static %}<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+<title>Case See — Catálogo</title>
+<link>https://{{ request.get_host }}{% url 'store:produtos' %}</link>
+<description>Acessórios para celular — Case See</description>
+{% for p in produtos %}
+<item>
+  <g:id>{{ p.sku|default:p.id }}</g:id>
+  <title>{{ p.name }}</title>
+  <description>{{ p.description|default:p.name|striptags|truncatewords:30 }}</description>
+  <link>https://{{ request.get_host }}{% url 'store:produto' p.slug %}</link>
+  {% if p.main_image %}<g:image_link>https://{{ request.get_host }}{{ p.main_image.image.url }}</g:image_link>{% endif %}
+  <g:availability>{% if p.in_stock %}in stock{% else %}out of stock{% endif %}</g:availability>
+  <g:price>{{ p.price }} BRL</g:price>
+  {% if p.has_discount %}<g:sale_price>{{ p.price }} BRL</g:sale_price>{% endif %}
+  <g:condition>new</g:condition>
+  <g:brand>{{ p.brand.name|default:"Case See" }}</g:brand>
+  <g:product_type>{{ p.category.name }}</g:product_type>
+  <g:google_product_category>Apparel &amp; Accessories &gt; Electronics Accessories</g:google_product_category>
+</item>
+{% endfor %}
+</channel>
+</rss>

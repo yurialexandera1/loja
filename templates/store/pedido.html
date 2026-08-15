@@ -1,0 +1,62 @@
+{% extends 'store/base.html' %}
+{% block title %}Pedido {{ order.code }} — Case See{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="receipt stack">
+    <div class="alert good">Pedido registrado. Agora é só confirmar com a gente no WhatsApp.</div>
+
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap">
+        <div>
+          <span class="eyebrow">Código do pedido</span>
+          <div class="code">{{ order.code }}</div>
+        </div>
+        <span class="status-pill {{ order.status }}">{{ order.get_status_display }}</span>
+      </div>
+
+      <div style="margin-top:22px">
+        {% for item in order.items.all %}
+          <div class="lineitem">
+            <span class="im"><svg aria-hidden="true"><use href="#i-{{ item.icon|default:'package' }}"></use></svg></span>
+            <div class="info">
+              <b>{{ item.product_name }}</b>
+              <span class="muted" style="font-size:.76rem">{{ item.qty }}× R$ {{ item.price }}{% if item.sku %} · cód. {{ item.sku }}{% endif %}</span>
+            </div>
+            <span class="amt num">R$ {{ item.subtotal|floatformat:2 }}</span>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="stotal" style="margin-top:12px">
+        <span class="lbl">Total com frete</span>
+        <span class="val">R$ {{ order.total|floatformat:2 }}</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Entrega</h3>
+      <p class="muted" style="font-size:.88rem">
+        {{ order.customer_name }}<br>
+        {{ order.address }} — {{ order.city }}, CEP {{ order.zip }}<br>
+        {{ order.email }}{% if order.phone %} · {{ order.phone }}{% endif %}
+      </p>
+    </div>
+
+    <a class="btn wa wide" href="{{ whatsapp_url }}">Confirmar no WhatsApp</a>
+    <a class="btn wide" href="{% url 'store:produtos' %}">Continuar comprando</a>
+  </div>
+</div>
+{% if ga4_id %}
+<script>
+  gtag('event', 'purchase', {
+    transaction_id: '{{ order.code }}',
+    value: {{ order.total }},
+    currency: 'BRL'
+  });
+</script>
+{% endif %}
+{% if meta_pixel_id %}
+<script>fbq('track', 'Purchase', {value: {{ order.total }}, currency: 'BRL'});</script>
+{% endif %}
+{% endblock %}

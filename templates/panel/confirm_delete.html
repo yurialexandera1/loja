@@ -1,0 +1,13 @@
+{% extends 'panel/base.html' %}
+{% block title %}{{ title }} — Painel{% endblock %}
+{% block content %}
+<div class="panel-head"><div><h1>{{ title }}</h1></div></div>
+<div class="panel pform">
+  <p>Tem certeza que deseja remover <b>{{ instance }}</b>? Essa ação não pode ser desfeita.</p>
+  <form method="post" style="display:flex; gap:10px">
+    {% csrf_token %}
+    <button class="btn primary" type="submit" style="background:var(--crit); border-color:var(--crit)">Remover</button>
+    <a class="btn" href="{% if cancel_url_name %}{% url cancel_url_name %}{% else %}javascript:history.back(){% endif %}">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

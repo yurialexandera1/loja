@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python \"C:\\\\\\\\Users\\\\\\\\yuria\\\\\\\\AppData\\\\\\\\Local\\\\\\\\hermes\\\\\\\\hermes-agent\\\\\\\\hermes_cli\\\\\\\\main.py\" --help)",
+      "Bash(npm install *)",
+      "Bash(curl -s ifconfig.me)",
+      "Bash(xargs cat)",
+      "Bash(hermes *)",
+      "Skill(schedule)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}

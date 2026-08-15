@@ -1,0 +1,64 @@
+{% extends 'panel/base.html' %}
+{% block title %}Produtos — Painel{% endblock %}
+{% block content %}
+<div class="panel-head">
+  <div><h1>Produtos</h1><span class="muted" style="font-size:.82rem">{{ produtos|length }} produto{{ produtos|length|pluralize }}</span></div>
+  <div style="display:flex; gap:10px">
+    <a class="btn" href="{% url 'panel:produtos_fotos_lote' %}">Fotos em lote</a>
+    <a class="btn primary" href="{% url 'panel:produto_novo' %}">Novo produto</a>
+  </div>
+</div>
+
+<form method="get" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+  <label class="searchbox" style="max-width:280px; flex:1">
+    <input type="search" name="busca" value="{{ busca }}" placeholder="Buscar produto...">
+  </label>
+  <select name="categoria" class="select" onchange="this.form.submit()">
+    <option value="">Todas as categorias</option>
+    {% for c in categories %}
+      <option value="{{ c.pk }}" {% if categoria_id == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>
+    {% endfor %}
+  </select>
+  <select name="marca" class="select" onchange="this.form.submit()">
+    <option value="">Todas as marcas</option>
+    {% for b in brands %}
+      <option value="{{ b.pk }}" {% if marca_id == b.pk|stringformat:"s" %}selected{% endif %}>{{ b.name }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit" class="btn" style="padding:8px 16px; font-size:.82rem">Filtrar</button>
+  {% if busca or categoria_id or marca_id %}
+    <a class="btn" href="{% url 'panel:produtos' %}">Limpar</a>
+  {% endif %}
+</form>
+
+<div class="pbox">
+  <div class="scroll-x">
+    <table class="ptable">
+      <thead><tr><th>Nome</th><th>SKU</th><th>Marca</th><th>Categoria</th><th colspan="2">Preço e estoque</th><th></th></tr></thead>
+      <tbody>
+        {% for produto in produtos %}
+          <tr>
+            <td><a href="{% url 'panel:produto_editar' produto.pk %}">{{ produto.name }}</a></td>
+            <td class="mono">{{ produto.sku|default:"—" }}</td>
+            <td>{{ produto.brand|default:"—" }}</td>
+            <td>{{ produto.category }}</td>
+            <td colspan="2">
+              <form method="post" action="{% url 'panel:produto_rapido' produto.pk %}?{{ request.GET.urlencode }}" style="display:flex; align-items:center; gap:6px">
+                {% csrf_token %}
+                <span class="muted">R$</span>
+                <input class="qty-input" style="width:76px" type="number" step="0.01" min="0" name="price" value="{{ produto.price }}">
+                <span class="muted">un.</span>
+                <input class="qty-input" style="width:60px" type="number" min="0" name="stock" value="{{ produto.stock }}">
+                <button class="btn" type="submit" style="padding:5px 10px; font-size:.74rem">Salvar</button>
+              </form>
+            </td>
+            <td class="ptable-actions"><a class="btn" href="{% url 'panel:produto_editar' produto.pk %}">Editar</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7" class="muted">Nenhum produto encontrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

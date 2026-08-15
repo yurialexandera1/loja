@@ -1,0 +1,43 @@
+{% extends 'panel/base.html' %}
+{% block title %}{{ title }} — Painel{% endblock %}
+{% block content %}
+<div class="panel-head">
+  <div><h1>{{ title }}</h1></div>
+  <a class="btn primary" href="{% url create_url_name %}">{{ create_label }}</a>
+</div>
+
+<div class="pbox">
+  <div class="scroll-x">
+    <table class="ptable">
+      <thead><tr>
+        {% for label in headers %}<th>{{ label }}</th>{% endfor %}
+        <th></th>
+      </tr></thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            {% for cell in row.cells %}<td>{{ cell }}</td>{% endfor %}
+            <td class="ptable-actions">
+              <a class="btn" href="{% url edit_url_name row.pk %}">Editar</a>
+              <a class="btn" href="{% url delete_url_name row.pk %}">Remover</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="{{ headers|length|add:1 }}" class="muted">Nada cadastrado ainda.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if page_obj.paginator.num_pages > 1 %}
+    <div class="ptable-pagination">
+      {% if page_obj.has_previous %}
+        <a class="btn" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+      {% endif %}
+      <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a class="btn" href="?page={{ page_obj.next_page_number }}">Próxima</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'panel/base.html' %}
+{% block title %}Indicações — Painel{% endblock %}
+{% block content %}
+<div class="panel-head"><div><h1>Indicações</h1></div></div>
+
+<div class="pbox">
+  <div class="scroll-x">
+    <table class="ptable">
+      <thead><tr><th>Código</th><th>Nome</th><th>E-mail</th><th class="right">Usos</th><th>Recompensa</th></tr></thead>
+      <tbody>
+        {% for referral in indicacoes %}
+          <tr>
+            <td class="mono">{{ referral.code }}</td>
+            <td>{{ referral.owner_name }}</td>
+            <td>{{ referral.owner_email }}</td>
+            <td class="right">{{ referral.uses }} / {{ referral.reward_threshold }}</td>
+            <td>{% if referral.reward_unlocked %}<span class="status-badge pago">Liberada</span>{% else %}<span class="status-badge pendente">Em progresso</span>{% endif %}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">Ninguém gerou um código de indicação ainda.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if page_obj.paginator.num_pages > 1 %}
+    <div class="ptable-pagination">
+      {% if page_obj.has_previous %}
+        <a class="btn" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+      {% endif %}
+      <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a class="btn" href="?page={{ page_obj.next_page_number }}">Próxima</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

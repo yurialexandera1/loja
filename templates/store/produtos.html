@@ -1,0 +1,74 @@
+{% extends 'store/base.html' %}
+{% block title %}{% if busca %}"{{ busca }}" — Case See{% elif categoria_atual == 'inclusivos' %}Linha inclusiva — Case See{% else %}Catálogo — Case See{% endif %}{% endblock %}
+
+{% block content %}
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div>
+        <span class="eyebrow">Catálogo</span>
+        <h2 style="margin-top:8px">
+          {% if busca %}Resultados para "{{ busca }}"
+          {% elif categoria_atual == 'inclusivos' %}Linha inclusiva
+          {% else %}Todos os produtos{% endif %}
+        </h2>
+        <p class="muted" style="margin-top:6px; font-size:.86rem">
+          {{ page_obj.paginator.count }} produto{{ page_obj.paginator.count|pluralize }} · preços à vista no PIX
+        </p>
+      </div>
+      {% if busca or categoria_atual %}
+        <a class="btn" href="{% url 'store:produtos' %}">Limpar filtros</a>
+      {% endif %}
+    </div>
+
+    <div class="catalog-layout">
+      <aside class="cat-sidebar">
+        <span class="eyebrow">Categorias</span>
+        <nav aria-label="Categorias do catálogo">
+          <a class="cat-link{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}">
+            Todos os produtos <span class="c">{{ total_geral }}</span>
+          </a>
+          <a class="cat-link incl{% if categoria_atual == 'inclusivos' %} on{% endif %}" href="{% url 'store:produtos' %}?categoria=inclusivos">
+            Linha inclusiva <span class="c">{{ total_inclusivos }}</span>
+          </a>
+          <span class="cat-sep"></span>
+          {% for c in categories %}
+            <a class="cat-link{% if categoria_atual == c.slug %} on{% endif %}" href="{% url 'store:produtos' %}?categoria={{ c.slug }}">
+              {{ c.name }} <span class="c">{{ c.total }}</span>
+            </a>
+          {% endfor %}
+        </nav>
+      </aside>
+
+      <div>
+        {% if products %}
+          <div class="catalog">
+            {% for product in products %}{% include 'store/_card.html' %}{% endfor %}
+          </div>
+
+          {% if page_obj.has_other_pages %}
+            <nav class="pager" aria-label="Paginação">
+              {% if page_obj.has_previous %}
+                <a class="btn" href="?{% if busca %}busca={{ busca|urlencode }}&amp;{% endif %}{% if categoria_atual %}categoria={{ categoria_atual|urlencode }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Anterior</a>
+              {% endif %}
+              <span class="page-info">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+              {% if page_obj.has_next %}
+                <a class="btn" href="?{% if busca %}busca={{ busca|urlencode }}&amp;{% endif %}{% if categoria_atual %}categoria={{ categoria_atual|urlencode }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Próxima</a>
+              {% endif %}
+            </nav>
+          {% endif %}
+        {% else %}
+          <div class="empty">
+            <h2>Nada encontrado</h2>
+            <p>{% if busca %}Não achamos nada para "{{ busca }}". Tente o código do produto, a marca, ou fale com a gente no WhatsApp.{% else %}Nenhum produto nesta categoria por enquanto.{% endif %}</p>
+            <div class="hero-actions" style="justify-content:center">
+              <a class="btn primary" href="{% url 'store:produtos' %}">Ver catálogo completo</a>
+              <a class="btn wa" href="https://wa.me/5521995095642">Perguntar no WhatsApp</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

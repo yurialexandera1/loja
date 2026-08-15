@@ -1,0 +1,9 @@
+[Unit]
+Description=Loja gunicorn socket
+[Socket]
+ListenStream=/run/loja.sock
+SocketUser=yuri
+SocketGroup=www-data
+SocketMode=0660
+[Install]
+WantedBy=sockets.target

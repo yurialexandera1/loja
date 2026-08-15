@@ -1,0 +1,10 @@
+[2026-08-12 21:41:24 -0300] [3103] [INFO] Starting gunicorn 21.2.0
+[2026-08-12 21:41:24 -0300] [3103] [INFO] Listening at: http://127.0.0.1:3102 (3103)
+[2026-08-12 21:41:24 -0300] [3103] [INFO] Using worker: sync
+[2026-08-12 21:41:24 -0300] [3104] [INFO] Booting worker with pid: 3104
+[2026-08-12 21:41:24 -0300] [3105] [INFO] Booting worker with pid: 3105
+[2026-08-12 21:43:02 -0300] [3105] [INFO] Worker exiting (pid: 3105)
+[2026-08-12 21:43:02 -0300] [3104] [INFO] Worker exiting (pid: 3104)
+[2026-08-12 21:43:02 -0300] [3103] [INFO] Handling signal: term
+[2026-08-12 21:43:02 -0300] [3103] [ERROR] Worker (pid:3105) was sent SIGTERM!
+[2026-08-12 21:43:02 -0300] [3103] [INFO] Shutting down: Master

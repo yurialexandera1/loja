@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ post.title }} — Case See{% endblock %}
+{% block description %}{{ post.excerpt|default:post.body|striptags|truncatewords:30 }}{% endblock %}
+
+{% block content %}
+<div class="wrap band">
+  <div class="crumbs" style="margin-bottom:18px"><a href="{% url 'store:blog_lista' %}">Blog</a> <span>›</span> {{ post.title }}</div>
+  <span class="eyebrow">{{ post.created_at|date:"d/m/Y" }}</span>
+  <h1 style="margin-top:10px; max-width:34ch">{{ post.title }}</h1>
+  <div class="desc" style="margin-top:24px; border-top:0; padding-top:0; max-width:70ch">
+    {{ post.body|linebreaks }}
+  </div>
+  <div class="hero-actions" style="margin-top:32px">
+    <a class="btn primary" href="{% url 'store:produtos' %}">Ver catálogo</a>
+    <a class="btn" href="{% url 'store:blog_lista' %}">Voltar ao blog</a>
+  </div>
+</div>
+{% endblock %}

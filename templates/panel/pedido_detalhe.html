@@ -1,0 +1,53 @@
+{% extends 'panel/base.html' %}
+{% block title %}Pedido {{ pedido.code }} — Painel{% endblock %}
+{% block content %}
+<div class="panel-head">
+  <div><span class="eyebrow">Pedido</span><h1 style="margin-top:6px">{{ pedido.code }}</h1></div>
+  <span class="status-badge {{ pedido.status }}">{{ pedido.get_status_display }}</span>
+</div>
+
+<div class="pbox">
+  <div class="pbox-head"><b>Itens</b></div>
+  <div class="scroll-x">
+    <table class="ptable">
+      <thead><tr><th>Produto</th><th>Código</th><th class="right">Qtd</th><th class="right">Preço</th><th class="right">Subtotal</th></tr></thead>
+      <tbody>
+        {% for item in pedido.items.all %}
+          <tr>
+            <td>{{ item.product_name }}</td>
+            <td class="mono">{{ item.sku|default:"—" }}</td>
+            <td class="right">{{ item.qty }}</td>
+            <td class="right">R$ {{ item.price|floatformat:2 }}</td>
+            <td class="right">R$ {{ item.subtotal|floatformat:2 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div style="padding:14px 18px; border-top:1px solid var(--line-soft); display:flex; justify-content:space-between; font-weight:700">
+    <span>Total</span><span class="num">R$ {{ pedido.total|floatformat:2 }}</span>
+  </div>
+</div>
+
+<div class="pbox">
+  <div class="pbox-head"><b>Entrega</b></div>
+  <div style="padding:16px 18px; font-size:.88rem; color:var(--ink-2); line-height:1.7">
+    {{ pedido.customer_name }}<br>
+    {{ pedido.address }} — {{ pedido.city }}, CEP {{ pedido.zip }}<br>
+    {{ pedido.email }}{% if pedido.phone %} · {{ pedido.phone }}{% endif %}
+  </div>
+</div>
+
+<div class="pbox">
+  <div class="pbox-head"><b>Mudar status</b></div>
+  <form method="post" action="{% url 'panel:pedido_status' pedido.pk %}" style="padding:16px 18px; display:flex; gap:10px; flex-wrap:wrap">
+    {% csrf_token %}
+    <select name="status" class="select">
+      {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if value == pedido.status %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn primary" type="submit">Atualizar</button>
+  </form>
+</div>
+{% endblock %}

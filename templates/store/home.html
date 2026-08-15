@@ -1,0 +1,98 @@
+{% extends 'store/base.html' %}
+{% block title %}Case See — Acessórios que fazem você brilhar{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Recreio dos Bandeirantes · Rio de Janeiro</span>
+      <h1>Acessórios que fazem você <em>brilhar</em>.</h1>
+      <div class="rule"></div>
+      <p class="lede">{{ total_products }} produtos com estoque conferido, preço à vista no PIX e entrega para todo o Brasil. Monte seu pedido aqui e feche no WhatsApp.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="{% url 'store:produtos' %}">Ver catálogo completo</a>
+        {% if inclusive_count %}<a class="btn teal" href="{% url 'store:produtos' %}?categoria=inclusivos">Conhecer a linha inclusiva</a>{% endif %}
+      </div>
+      <div class="hero-facts">
+        <div class="fact"><div class="k num">{{ total_products }}</div><div class="v">produtos no catálogo</div></div>
+        {% if inclusive_count %}<div class="fact"><div class="k num">{{ inclusive_count }}</div><div class="v">itens da linha inclusiva</div></div>{% endif %}
+        <div class="fact"><div class="k num">R$ 199</div><div class="v">frete grátis no Rio a partir de</div></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      {% if featured %}
+        <div class="hero-mosaic">
+          {% for product in featured|slice:":4" %}
+            <a class="hero-tile" href="{% url 'store:produto' product.slug %}">
+              {% if product.main_image %}
+                <img src="{{ product.main_image.image.url }}" alt="{{ product.name }}" loading="eager">
+              {% else %}
+                <svg aria-hidden="true"><use href="#i-{{ product.icon|default:'package' }}"></use></svg>
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <svg aria-hidden="true"><use href="#i-smartphone"></use></svg>
+      {% endif %}
+      <span class="hero-badge"><span class="dot"></span> Estoque atualizado hoje</span>
+    </div>
+  </div>
+</section>
+
+{% if categories %}
+<section class="band" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="band-head">
+      <div><span class="eyebrow">Navegue</span><h2 style="margin-top:8px">Categorias</h2></div>
+      <a class="btn" href="{% url 'store:produtos' %}">Ver todas as categorias</a>
+    </div>
+    <div class="cat-showcase">
+      {% for c in categories %}
+        <a class="cat-card" href="{% url 'store:produtos' %}?categoria={{ c.slug }}">
+          <span class="cat-card-shot">
+            {% if c.sample_image %}
+              <img src="{{ c.sample_image.image.url }}" alt="{{ c.name }}" loading="lazy">
+            {% else %}
+              <svg aria-hidden="true"><use href="#i-{{ c.icon|default:'package' }}"></use></svg>
+            {% endif %}
+          </span>
+          <span class="cat-card-label">{{ c.name }}<span class="c">{{ c.total }}</span></span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div><span class="eyebrow">Seleção da loja</span><h2 style="margin-top:8px">Destaques</h2></div>
+      <a class="btn" href="{% url 'store:produtos' %}">Ver todos</a>
+    </div>
+    {% if featured %}
+      <div class="catalog">
+        {% for product in featured %}{% include 'store/_card.html' %}{% endfor %}
+      </div>
+    {% else %}
+      <div class="empty"><h2>Nenhum destaque ainda</h2><p>Marque produtos como destaque no admin para exibi-los aqui.</p></div>
+    {% endif %}
+  </div>
+</section>
+
+{% if inclusive_count %}
+<section class="band" style="padding-top:0">
+  <div class="wrap">
+    <div class="strip">
+      <div>
+        <span class="eyebrow" style="color:var(--incl)">Aqui é inclusão também</span>
+        <h3>{{ inclusive_count }} produtos pensados para quem precisa ser visto — e respeitado.</h3>
+        <p>Cordões de identificação, abafadores de ruído e estampas. Categoria com espaço próprio na loja, não escondida no fim de uma lista.</p>
+      </div>
+      <a class="btn tealsolid" href="{% url 'store:produtos' %}?categoria=inclusivos">Ver a linha completa</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

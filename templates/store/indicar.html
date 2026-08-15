@@ -1,0 +1,34 @@
+{% extends 'store/base.html' %}
+{% block title %}Indique e ganhe — Case See{% endblock %}
+
+{% block content %}
+<div class="wrap band">
+  <div class="band-head">
+    <div>
+      <span class="eyebrow">Indique e ganhe</span>
+      <h2 style="margin-top:8px">Compartilhe seu link e ganhe desconto</h2>
+      <p class="muted" style="margin-top:8px; max-width:60ch">Cada pessoa que comprar pelo seu link ganha 10% de desconto na hora. A cada 3 indicações usadas, você também ganha uma recompensa.</p>
+    </div>
+  </div>
+
+  {% if referral %}
+    <div class="panel" style="max-width:520px">
+      <h3>Seu link de indicação</h3>
+      <p class="muted" style="font-size:.88rem; word-break:break-all">{{ link }}</p>
+      <p class="muted" style="margin-top:14px; font-size:.85rem">
+        Código: <b>{{ referral.code }}</b> · {{ referral.uses }} indicaç{{ referral.uses|pluralize:"ão,ões" }} usada{{ referral.uses|pluralize }}
+        {% if referral.reward_unlocked %}· <span style="color:var(--good); font-weight:700">recompensa liberada!</span>{% endif %}
+      </p>
+    </div>
+  {% else %}
+    <form method="post" class="panel" style="max-width:420px">
+      {% csrf_token %}
+      <div class="fieldgrid">
+        <div class="field wide"><label for="{{ form.owner_name.id_for_label }}">Seu nome</label>{{ form.owner_name }}</div>
+        <div class="field wide"><label for="{{ form.owner_email.id_for_label }}">Seu e-mail</label>{{ form.owner_email }}</div>
+      </div>
+      <button class="btn primary" type="submit" style="margin-top:14px">Gerar meu link</button>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

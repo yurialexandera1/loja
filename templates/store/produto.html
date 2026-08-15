@@ -1,0 +1,168 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ product.name }} — Case See{% endblock %}
+{% block description %}{{ product.description|striptags|truncatewords:30 }}{% endblock %}
+{% block og_type %}product{% endblock %}
+{% block og_title %}{{ product.name }} — Case See{% endblock %}
+{% block og_description %}{{ product.description|default:product.name|striptags|truncatewords:30 }}{% endblock %}
+{% block og_image %}{% if product.main_image %}<meta property="og:image" content="https://{{ request.get_host }}{{ product.main_image.image.url }}">{% endif %}{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.name|escapejs }}",
+  {% if product.sku %}"sku": "{{ product.sku|escapejs }}",{% endif %}
+  {% if product.brand %}"brand": {"@type": "Brand", "name": "{{ product.brand.name|escapejs }}"},{% endif %}
+  "description": "{{ product.description|default:product.name|striptags|escapejs }}",
+  {% if product.average_rating %}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ product.average_rating }},
+    "reviewCount": {{ product.review_count }}
+  },
+  {% endif %}
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "BRL",
+    "price": {{ product.price }},
+    "availability": "https://schema.org/{% if product.in_stock %}InStock{% else %}OutOfStock{% endif %}",
+    "url": "https://{{ request.get_host }}{% url 'store:produto' product.slug %}"
+  }
+}
+</script>
+{% endblock %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://{{ request.get_host }}/"},
+    {"@type": "ListItem", "position": 2, "name": "{{ product.category.name }}", "item": "https://{{ request.get_host }}{% url 'store:produtos' %}?categoria={{ product.category.slug }}"},
+    {"@type": "ListItem", "position": 3, "name": "{{ product.name }}"}
+  ]
+}
+</script>
+
+{% block content %}
+<div class="wrap">
+  <div class="pdp">
+    <div>
+      <div class="stage">
+        {% if product.main_image %}
+          <img src="{{ product.main_image.image.url }}" alt="{{ product.main_image.alt|default:product.name }}">
+        {% else %}
+          <svg aria-hidden="true"><use href="#i-{{ product.icon|default:'package' }}"></use></svg>
+        {% endif %}
+      </div>
+      {% if product.images.count > 1 %}
+        <div class="thumbs">
+          {% for image in product.images.all %}
+            <span class="thumb"><img src="{{ image.image.url }}" alt="{{ image.alt|default:product.name }}" loading="lazy"></span>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if product.description %}
+        <div class="desc" style="margin-top:28px">
+          <h3 style="font-size:1.05rem; margin-bottom:10px">Descrição</h3>
+          {{ product.description|linebreaks }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="stack">
+      <div class="crumbs">
+        <a href="{% url 'store:home' %}">Início</a> <span>›</span>
+        <a href="{% url 'store:produtos' %}?categoria={{ product.category.slug }}">{{ product.category.name }}</a>
+      </div>
+      {% if product.is_inclusive %}
+        <span class="eyebrow" style="color:var(--incl)">Linha inclusiva{% if product.brand %} · {{ product.brand.name }}{% endif %}</span>
+      {% elif product.brand %}
+        <span class="eyebrow">{{ product.brand.name }}</span>
+      {% endif %}
+      <h1>{{ product.name }}</h1>
+      <div class="pdp-meta">
+        {% if product.sku %}<span>cód. {{ product.sku }}</span>{% endif %}
+        <span>{% if product.in_stock %}{{ product.stock }} em estoque{% else %}esgotado{% endif %}</span>
+        {% if product.sold_count %}<span>{{ product.sold_count }} vendidos</span>{% endif %}
+      </div>
+
+      <div class="pricepanel">
+        {% if product.has_discount %}
+          <span class="badge-save">−{{ product.discount_percent }}% · de R$ {{ product.compare_at_price }}</span>
+        {% endif %}
+        <div class="big num">R$ {{ product.price }}</div>
+        <div class="alt">R$ {{ product.pix_price }} à vista no PIX</div>
+      </div>
+
+      {% if product.in_stock %}
+        <form method="post" action="{% url 'store:add_cart' product.slug %}" class="buyrow">
+          {% csrf_token %}
+          <label for="qty-input" class="sr-only">Quantidade</label>
+          <input id="qty-input" class="qty-input" type="number" name="qty" value="1" min="1" max="{{ product.stock }}" aria-label="Quantidade">
+          <button class="btn primary" type="submit" style="flex:1">Adicionar ao pedido</button>
+        </form>
+      {% else %}
+        <div class="alert warn">Este produto está esgotado. Fale com a gente no WhatsApp para saber quando volta.</div>
+        <a class="btn wa wide" href="https://wa.me/5521995095642?text={{ product.name|urlencode }}">Avisar quando chegar</a>
+      {% endif %}
+
+      <div class="trust">
+        <div><b>Estoque real</b>Baixa no ato do pedido</div>
+        <div><b>Retirada na loja</b>Recreio dos Bandeirantes</div>
+        <div><b>Atendimento</b>WhatsApp em horário comercial</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="band" style="padding-top:0">
+    <div class="band-head">
+      <div>
+        <span class="eyebrow">Prova social</span>
+        <h2 style="margin-top:8px; font-size:1.4rem">Avaliações
+          {% if product.review_count %}<span class="muted" style="font-size:1rem; font-weight:600">· {{ product.average_rating }}/5 ({{ product.review_count }})</span>{% endif %}
+        </h2>
+      </div>
+    </div>
+
+    {% if reviews %}
+      <div class="stack">
+        {% for review in reviews %}
+          <div class="panel">
+            <div style="display:flex; justify-content:space-between; gap:12px">
+              <b>{{ review.author_name }}</b>
+              <span class="muted">{{ review.rating }}/5</span>
+            </div>
+            <p class="muted" style="margin-top:8px; font-size:.9rem">{{ review.comment }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="muted">Ainda sem avaliações. Seja a primeira pessoa a avaliar este produto.</p>
+    {% endif %}
+
+    <details style="margin-top:18px">
+      <summary class="btn" style="display:inline-flex; cursor:pointer">Avaliar este produto</summary>
+      <form method="post" action="{% url 'store:avaliar' product.slug %}" class="panel" style="margin-top:14px; max-width:480px">
+        {% csrf_token %}
+        <div class="fieldgrid">
+          <div class="field wide"><label for="{{ review_form.author_name.id_for_label }}">Seu nome</label>{{ review_form.author_name }}</div>
+          <div class="field wide"><label for="{{ review_form.rating.id_for_label }}">Nota</label>{{ review_form.rating }}</div>
+          <div class="field wide"><label for="{{ review_form.comment.id_for_label }}">Comentário</label>{{ review_form.comment }}</div>
+        </div>
+        <button class="btn primary" type="submit" style="margin-top:14px">Enviar avaliação</button>
+      </form>
+    </details>
+  </section>
+
+  {% if related %}
+    <section class="band" style="padding-top:0">
+      <div class="band-head"><div><span class="eyebrow">Combina com</span><h2 style="margin-top:8px; font-size:1.4rem">Da mesma categoria</h2></div></div>
+      <div class="catalog">
+        {% for product in related %}{% include 'store/_card.html' %}{% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}
+

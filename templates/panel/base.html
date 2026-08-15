@@ -1,0 +1,43 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Painel — Case See{% endblock %}</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="{% static 'store/css/loja.css' %}">
+</head>
+<body>
+<div class="panel-shell">
+  <aside class="panel-side">
+    <div class="who">
+      <span class="av">{{ request.user.username|slice:":2"|upper }}</span>
+      <span><b>{{ request.user.username }}</b><span>Case See</span></span>
+    </div>
+    <a href="{% url 'panel:dashboard' %}" class="{% if active == 'dashboard' %}on{% endif %}">Visão geral</a>
+    <a href="{% url 'panel:pedidos' %}" class="{% if active == 'pedidos' %}on{% endif %}">Pedidos</a>
+    <a href="{% url 'panel:produtos' %}" class="{% if active == 'produtos' %}on{% endif %}">Produtos</a>
+    <a href="{% url 'panel:categorias' %}" class="{% if active == 'categorias' %}on{% endif %}">Categorias</a>
+    <a href="{% url 'panel:marcas' %}" class="{% if active == 'marcas' %}on{% endif %}">Marcas</a>
+    <a href="{% url 'panel:avaliacoes' %}" class="{% if active == 'avaliacoes' %}on{% endif %}">Avaliações</a>
+    <span class="grp eyebrow">Vendas</span>
+    <a href="{% url 'panel:cupons' %}" class="{% if active == 'cupons' %}on{% endif %}">Cupons</a>
+    <a href="{% url 'panel:fretes' %}" class="{% if active == 'fretes' %}on{% endif %}">Zonas de frete</a>
+    <a href="{% url 'panel:indicacoes' %}" class="{% if active == 'indicacoes' %}on{% endif %}">Indicações</a>
+    <span class="grp eyebrow">Conteúdo</span>
+    <a href="{% url 'panel:posts' %}" class="{% if active == 'posts' %}on{% endif %}">Blog</a>
+    <span class="grp eyebrow">Loja</span>
+    <a href="/">Ver a loja</a>
+    <form method="post" action="{% url 'panel:logout' %}"><button class="plink" type="submit">Sair</button>{% csrf_token %}</form>
+  </aside>
+  <main class="panel-main">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}warn{% else %}good{% endif %}" role="status">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

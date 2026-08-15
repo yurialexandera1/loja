@@ -1,0 +1,33 @@
+{% extends 'panel/base.html' %}
+{% block title %}Pedidos — Painel{% endblock %}
+{% block content %}
+<div class="panel-head"><div><h1>Pedidos</h1></div></div>
+
+<div class="toolbar">
+  <a class="chip{% if not status_atual %} on{% endif %}" href="{% url 'panel:pedidos' %}">Todos</a>
+  {% for value, label in status_choices %}
+    <a class="chip{% if status_atual == value %} on{% endif %}" href="?status={{ value }}">{{ label }}</a>
+  {% endfor %}
+</div>
+
+<div class="pbox">
+  <div class="scroll-x">
+    <table class="ptable">
+      <thead><tr><th>Código</th><th>Cliente</th><th>Status</th><th>Criado em</th><th class="right">Total</th></tr></thead>
+      <tbody>
+        {% for pedido in pedidos %}
+          <tr>
+            <td><a href="{% url 'panel:pedido_detalhe' pedido.pk %}" class="mono">{{ pedido.code }}</a></td>
+            <td>{{ pedido.customer_name }}</td>
+            <td><span class="status-badge {{ pedido.status }}">{{ pedido.get_status_display }}</span></td>
+            <td class="muted">{{ pedido.created_at|date:"d/m/Y H:i" }}</td>
+            <td class="right">R$ {{ pedido.total|floatformat:2 }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">Nenhum pedido encontrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

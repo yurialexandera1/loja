@@ -1,0 +1,11 @@
+[2026-08-12 21:02:21 -0300] [31766] [INFO] Starting gunicorn 21.2.0
+[2026-08-12 21:02:21 -0300] [31766] [INFO] Listening at: http://0.0.0.0:3000 (31766)
+[2026-08-12 21:02:21 -0300] [31766] [INFO] Using worker: gthread
+[2026-08-12 21:02:21 -0300] [31799] [INFO] Booting worker with pid: 31799
+[2026-08-12 21:02:21 -0300] [31809] [INFO] Booting worker with pid: 31809
+[2026-08-12 21:02:21 -0300] [31815] [INFO] Booting worker with pid: 31815
+[2026-08-12 21:34:00 -0300] [31766] [INFO] Handling signal: term
+[2026-08-12 21:34:00 -0300] [31766] [ERROR] Worker (pid:31809) was sent SIGHUP!
+[2026-08-12 21:34:00 -0300] [31766] [ERROR] Worker (pid:31815) was sent SIGHUP!
+[2026-08-12 21:34:00 -0300] [31766] [ERROR] Worker (pid:31799) was sent SIGHUP!
+[2026-08-12 21:34:00 -0300] [31766] [INFO] Shutting down: Master

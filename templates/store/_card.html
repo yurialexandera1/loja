@@ -1,0 +1,52 @@
+{% comment %}
+Card de produto. Fonte unica usada na home, na listagem e nos relacionados —
+qualquer mudanca de vitrine acontece so aqui.
+Espera: product (core.models.Product)
+{% endcomment %}
+<article class="card">
+  <a class="shot" href="{% url 'store:produto' product.slug %}">
+    {% if product.is_inclusive %}
+      <span class="tag incl">Inclusivo</span>
+    {% elif not product.in_stock %}
+      <span class="tag out">Esgotado</span>
+    {% elif product.has_discount %}
+      <span class="tag off">−{{ product.discount_percent }}%</span>
+    {% elif product.is_low_stock %}
+      <span class="tag low">Últimas {{ product.stock }}</span>
+    {% endif %}
+    {% if product.main_image %}
+      <img src="{{ product.main_image.image.url }}" alt="{{ product.main_image.alt|default:product.name }}" loading="lazy" sizes="(max-width: 600px) 100vw, 248px">
+    {% else %}
+      <svg aria-hidden="true"><use href="#i-{{ product.icon|default:'package' }}"></use></svg>
+    {% endif %}
+  </a>
+  <div class="card-body">
+    {% if product.brand %}<span class="kicker">{{ product.brand.name }}</span>{% endif %}
+    <a class="pname" href="{% url 'store:produto' product.slug %}">{{ product.name }}</a>
+    {% if product.sku %}<span class="subline">cód. {{ product.sku }}</span>{% endif %}
+    {% if not product.in_stock %}
+      <span class="stockline out"><span class="dot" style="background:currentColor"></span>Esgotado</span>
+    {% elif product.is_low_stock %}
+      <span class="stockline low"><span class="dot" style="background:currentColor"></span>Últimas {{ product.stock }} unidades</span>
+    {% else %}
+      <span class="stockline ok"><span class="dot" style="background:currentColor"></span>{{ product.stock }} em estoque</span>
+    {% endif %}
+
+    <form method="post" action="{% url 'store:add_cart' product.slug %}">
+      {% csrf_token %}
+      <div class="priceblock">
+        <div>
+          {% if product.has_discount %}<div class="was num">R$ {{ product.compare_at_price }}</div>{% endif %}
+          <div class="price num">R$ {{ product.price }}</div>
+          <div class="pix">R$ {{ product.pix_price }} no PIX</div>
+        </div>
+        <input class="qty-input" type="number" name="qty" value="1" min="1" max="{{ product.stock }}"
+               aria-label="Quantidade de {{ product.name }}"{% if not product.in_stock %} disabled{% endif %}>
+      </div>
+      <button class="addbtn" type="submit"{% if not product.in_stock %} disabled{% endif %}>
+        {% if product.in_stock %}Adicionar ao pedido{% else %}Indisponível{% endif %}
+      </button>
+    </form>
+  </div>
+</article>
+

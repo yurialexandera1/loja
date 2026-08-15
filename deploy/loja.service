@@ -1,0 +1,16 @@
+[Unit]
+Description=Loja (Django/gunicorn)
+Requires=loja.socket
+After=network.target
+[Service]
+Type=notify
+User=yuri
+Group=yuri
+WorkingDirectory=/home/yuri/loja_django
+Environment=DJANGO_SETTINGS_MODULE=loja.settings
+Environment=DEBUG=0
+ExecStart=/home/yuri/loja_django/venv/bin/gunicorn --workers 3 --worker-class gthread --threads 4 --timeout 120 --bind unix:/run/loja.sock loja.wsgi:application
+Restart=always
+RestartSec=5
+[Install]
+WantedBy=multi-user.target

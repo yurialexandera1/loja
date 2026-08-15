@@ -1,0 +1,15 @@
+[12/Aug/2026 20:53:44] "GET / HTTP/1.1" 200 7426
+[12/Aug/2026 20:53:44] "GET /api/products/ HTTP/1.1" 200 7167
+[12/Aug/2026 20:53:44] "GET /api/categories/ HTTP/1.1" 200 492
+[12/Aug/2026 20:53:45] "GET /admin/ HTTP/1.1" 302 0
+[12/Aug/2026 20:55:03] "POST /api/checkout/ HTTP/1.1" 500 145
+[12/Aug/2026 20:55:10] "POST /api/checkout/ HTTP/1.1" 500 145
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 12, 2026 - 20:53:30
+Django version 4.2.30, using settings 'loja.settings'
+Starting development server at http://127.0.0.1:3101/
+Quit the server with CONTROL-C.
+
+[12/Aug/2026 20:55:58] "POST /api/checkout/ HTTP/1.1" 201 333

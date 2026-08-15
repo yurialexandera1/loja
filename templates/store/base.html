@@ -1,0 +1,164 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Case See — Acessórios{% endblock %}</title>
+<link rel="preload" href="/static/store/fonts/fraunces-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/store/fonts/worksans-variable.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="description" content="{% block description %}Capinhas e acessórios para celular no Recreio dos Bandeirantes, Rio de Janeiro. Estoque conferido, preço à vista no PIX e entrega para todo o Brasil.{% endblock %}">
+<meta property="og:site_name" content="Case See">
+<meta property="og:type" content="{% block og_type %}website{% endblock %}">
+<meta property="og:title" content="{% block og_title %}Case See — Acessórios{% endblock %}">
+<meta property="og:description" content="{% block og_description %}Capinhas e acessórios para celular no Recreio dos Bandeirantes, Rio de Janeiro.{% endblock %}">
+<meta property="og:url" content="https://{{ request.get_host }}{{ request.path }}">
+<meta property="og:image" content="https://{{ request.get_host }}{% static "store/img/og-image.jpg" %}">
+{% block og_image %}{% endblock %}
+<link rel="canonical" href="https://{{ request.get_host }}{{ request.path }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://{{ request.get_host }}{% static "store/img/og-image.jpg" %}">
+{% block structured_data %}{% endblock %}
+<link rel="stylesheet" href="{% static 'store/css/loja.css' %}">
+{% if ga4_id %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ ga4_id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ ga4_id }}');
+</script>
+{% endif %}
+{% if meta_pixel_id %}
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '{{ meta_pixel_id }}');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+  src="https://www.facebook.com/tr?id={{ meta_pixel_id }}&ev=PageView&noscript=1"></noscript>
+{% endif %}
+</head>
+<body>
+
+<a href="#main-content" class="sr-only-focusable">Pular para o conteúdo</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-package" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round">
+    <path d="M50 12 86 32v36L50 88 14 68V32z"/><path d="M14 32l36 20 36-20M50 52v36"/>
+  </symbol>
+  <symbol id="i-cable" viewBox="0 0 100 100" fill="none">
+    <path d="M18 80c16 0 14-28 32-28s16 28 32 28" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+    <rect x="10" y="68" width="17" height="24" rx="5" fill="currentColor"/><rect x="73" y="68" width="17" height="24" rx="5" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-headphones" viewBox="0 0 100 100" fill="none">
+    <path d="M22 64V50a28 28 0 0 1 56 0v14" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+    <rect x="12" y="58" width="19" height="28" rx="9" fill="currentColor"/><rect x="69" y="58" width="19" height="28" rx="9" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-smartphone" viewBox="0 0 100 100" fill="none">
+    <rect x="28" y="8" width="44" height="84" rx="11" stroke="currentColor" stroke-width="6"/>
+    <circle cx="50" cy="80" r="4" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-zap" viewBox="0 0 100 100" fill="none">
+    <rect x="22" y="24" width="56" height="52" rx="12" stroke="currentColor" stroke-width="6"/>
+    <path d="M54 34 42 56h11l-4 14 15-22H52l2-14z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-battery-charging" viewBox="0 0 100 100" fill="none">
+    <rect x="12" y="32" width="66" height="36" rx="9" stroke="currentColor" stroke-width="6"/>
+    <path d="M84 44v12" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+    <path d="M48 38 38 52h10l-3 10 12-16H46l2-8z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-car" viewBox="0 0 100 100" fill="none">
+    <path d="M14 62v-8l8-18a8 8 0 0 1 7-5h42a8 8 0 0 1 7 5l8 18v8" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="14" y="58" width="72" height="16" rx="6" stroke="currentColor" stroke-width="6"/>
+    <circle cx="30" cy="78" r="5" fill="currentColor"/><circle cx="70" cy="78" r="5" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-tag" viewBox="0 0 100 100" fill="none">
+    <path d="M50 12H16v34l38 38 34-34z" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="34" cy="32" r="5" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<header class="storebar">
+  <div class="wrap">
+    <div class="sb-top">
+      <a href="{% url 'store:home' %}" class="logo">
+        <img src="{% static 'store/img/logo.png' %}" alt="Case See" class="mk">
+        <span><b>Case See</b><small>Acessórios</small></span>
+      </a>
+      <form class="searchbox" method="get" action="{% url 'store:produtos' %}" role="search">
+        <button type="submit" aria-label="Buscar">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+        </button>
+        <input type="search" name="busca" value="{{ busca|default:'' }}" placeholder="Buscar por nome, código ou marca — ex: CB-105, AGOLD" aria-label="Buscar por nome, código ou marca">
+      </form>
+      <a href="{% url 'store:carrinho' %}" class="buy-btn">
+        Meu pedido{% if cart_count %} <span class="pill num">{{ cart_count }}</span>{% endif %}
+      </a>
+    </div>
+    <nav class="navrow" aria-label="Navegação principal">
+      <a class="navlink{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}">Todos os produtos</a>
+      <a class="navlink incl{% if categoria_atual == 'inclusivos' %} on{% endif %}" href="{% url 'store:produtos' %}?categoria=inclusivos">Linha inclusiva</a>
+      <a class="navlink" href="{% url 'store:blog_lista' %}">Blog</a>
+      <a class="navlink" href="{% url 'store:indicar' %}">Indique e ganhe</a>
+    </nav>
+  </div>
+</header>
+
+{% if messages %}
+  <div class="wrap" style="padding-top:18px">
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'error' %}warn{% else %}good{% endif %}" role="status">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<main id="main-content">{% block content %}{% endblock %}</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="logo"><img src="{% static 'store/img/logo.png' %}" alt="Case See" class="mk"><span><b>Case See</b><small>Acessórios</small></span></div>
+        <p>Mais que uma loja: espaço de estilo, qualidade e representatividade. Aqui é inclusão também — todos são bem-vindos e merecem brilhar com a gente.</p>
+      </div>
+      <div>
+        <span class="eyebrow">Fale conosco</span>
+        <div class="flist">
+          <a href="https://wa.me/5521995095642">WhatsApp 55 21 99509-5642</a>
+          <a href="https://instagram.com/case__see">@case__see</a>
+          <a href="mailto:caseseeacessorios@gmail.com">caseseeacessorios@gmail.com</a>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow">Loja física</span>
+        <div class="flist">
+          <span>Av. das Américas, 15500</span>
+          <span>Shopping Recreio dos Bandeirantes</span>
+          <span>Rio de Janeiro — RJ</span>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow">Loja</span>
+        <div class="flist">
+          <a href="{% url 'store:produtos' %}">Catálogo completo</a>
+          <a href="{% url 'store:produtos' %}?categoria=inclusivos">Linha inclusiva</a>
+          <a href="{% url 'store:carrinho' %}">Meu pedido</a>
+          <a href="{% url 'store:blog_lista' %}">Blog</a>
+          <a href="{% url 'store:indicar' %}">Indique e ganhe</a>
+        </div>
+      </div>
+    </div>
+    <div class="fbottom">
+      <span>© Case See Acessórios</span>
+      <span>PIX · Cartão · Retirada na loja</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
+
+

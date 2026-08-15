@@ -1,0 +1,83 @@
+{% extends 'panel/base.html' %}
+{% block title %}{{ title }} — Painel{% endblock %}
+{% block content %}
+<div class="panel-head"><div><h1>{{ title }}</h1></div></div>
+
+<form method="post" class="panel pform">
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert warn">{{ form.non_field_errors }}</div>{% endif %}
+  <div class="fieldgrid">
+    {% for field in form %}
+      <div class="field wide">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <div style="display:flex; gap:10px">
+    <button class="btn primary" type="submit">Salvar</button>
+    <a class="btn" href="{% url 'panel:produtos' %}">Voltar</a>
+  </div>
+</form>
+
+{% if produto %}
+  <div class="pbox">
+    <div class="pbox-head"><b>Fotos</b></div>
+    <div style="padding:16px 18px; display:flex; flex-direction:column; gap:12px">
+      {% for foto in produto.images.all %}
+        <div style="display:flex; align-items:center; gap:12px">
+          <img src="{{ foto.image.url }}" alt="{{ foto.alt }}" style="width:52px; height:52px; object-fit:cover; border-radius:8px">
+          <span class="muted" style="font-size:.82rem; flex:1">{{ foto.alt|default:"sem descrição" }} · ordem {{ foto.order }}</span>
+          <form method="post" action="{% url 'panel:produto_foto_remover' produto.pk foto.pk %}">
+            {% csrf_token %}<button class="btn" type="submit" style="padding:5px 10px; font-size:.76rem">Remover</button>
+          </form>
+        </div>
+      {% empty %}
+        <span class="muted" style="font-size:.85rem">Nenhuma foto ainda.</span>
+      {% endfor %}
+      <form method="post" action="{% url 'panel:produto_foto_nova' produto.pk %}" enctype="multipart/form-data" class="fieldgrid" style="margin-top:8px">
+        {% csrf_token %}
+        <div class="field wide"><label>Imagem</label>{{ image_form.image }}</div>
+        <div class="field"><label>Texto alternativo</label>{{ image_form.alt }}</div>
+        <div class="field"><label>Ordem</label>{{ image_form.order }}</div>
+        <div class="field wide"><button class="btn" type="submit">Adicionar foto</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="pbox">
+    <div class="pbox-head"><b>Variantes (cor / tamanho)</b></div>
+    <div class="scroll-x">
+      <table class="ptable">
+        <thead><tr><th>Cor</th><th>Tamanho</th><th>Código</th><th class="right">Estoque</th><th></th></tr></thead>
+        <tbody>
+          {% for variante in produto.variants.all %}
+            <tr>
+              <td>{{ variante.color|default:"—" }}</td>
+              <td>{{ variante.size|default:"—" }}</td>
+              <td class="mono">{{ variante.sku|default:"—" }}</td>
+              <td class="right">{{ variante.stock }}</td>
+              <td class="ptable-actions">
+                <form method="post" action="{% url 'panel:produto_variante_remover' produto.pk variante.pk %}">
+                  {% csrf_token %}<button class="btn" type="submit" style="padding:5px 10px; font-size:.76rem">Remover</button>
+                </form>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5" class="muted">Nenhuma variante ainda — o estoque usado é o do produto.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <form method="post" action="{% url 'panel:produto_variante_nova' produto.pk %}" class="fieldgrid" style="padding:16px 18px">
+      {% csrf_token %}
+      <div class="field"><label>Cor</label>{{ variant_form.color }}</div>
+      <div class="field"><label>Tamanho</label>{{ variant_form.size }}</div>
+      <div class="field"><label>Código</label>{{ variant_form.sku }}</div>
+      <div class="field"><label>Estoque</label>{{ variant_form.stock }}</div>
+      <div class="field wide"><button class="btn" type="submit">Adicionar variante</button></div>
+    </form>
+  </div>
+{% endif %}
+{% endblock %}

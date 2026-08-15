@@ -1,0 +1,48 @@
+{% extends 'panel/base.html' %}
+{% block title %}Avaliações — Painel{% endblock %}
+{% block content %}
+<div class="panel-head"><div><h1>Avaliações</h1></div></div>
+
+<div class="toolbar">
+  <a class="chip{% if not apenas_pendentes %} on{% endif %}" href="{% url 'panel:avaliacoes' %}">Todas</a>
+  <a class="chip{% if apenas_pendentes %} on{% endif %}" href="?pendentes=1">Pendentes</a>
+</div>
+
+<div class="pbox">
+  <div class="scroll-x">
+    <table class="ptable">
+      <thead><tr><th>Produto</th><th>Autor</th><th>Nota</th><th>Comentário</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        {% for review in avaliacoes %}
+          <tr>
+            <td>{{ review.product.name }}</td>
+            <td>{{ review.author_name }}</td>
+            <td>{{ review.rating }}/5</td>
+            <td class="muted" style="max-width:320px">{{ review.comment|truncatewords:16 }}</td>
+            <td>{% if review.approved %}<span class="status-badge pago">Aprovada</span>{% else %}<span class="status-badge pendente">Pendente</span>{% endif %}</td>
+            <td class="ptable-actions">
+              {% if not review.approved %}
+                <form method="post" action="{% url 'panel:avaliacao_aprovar' review.pk %}"><button class="btn" type="submit">{% csrf_token %}Aprovar</button></form>
+              {% endif %}
+              <form method="post" action="{% url 'panel:avaliacao_remover' review.pk %}"><button class="btn" type="submit">{% csrf_token %}Remover</button></form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="muted">Nenhuma avaliação ainda.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if page_obj.paginator.num_pages > 1 %}
+    <div class="ptable-pagination">
+      {% if page_obj.has_previous %}
+        <a class="btn" href="?{% if apenas_pendentes %}pendentes=1&amp;{% endif %}page={{ page_obj.previous_page_number }}">Anterior</a>
+      {% endif %}
+      <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a class="btn" href="?{% if apenas_pendentes %}pendentes=1&amp;{% endif %}page={{ page_obj.next_page_number }}">Próxima</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

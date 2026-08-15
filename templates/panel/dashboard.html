@@ -1,0 +1,54 @@
+{% extends 'panel/base.html' %}
+{% block title %}Visão geral — Painel{% endblock %}
+{% block content %}
+<div class="panel-head">
+  <div><h1>Visão geral</h1></div>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><span class="eyebrow">Faturamento (mês)</span><span class="k num">R$ {{ revenue|floatformat:2 }}</span></div>
+  <div class="kpi"><span class="eyebrow">Pedidos (mês)</span><span class="k num">{{ orders_count }}</span></div>
+  <div class="kpi"><span class="eyebrow">Pendentes</span><span class="k num">{{ pending_count }}</span></div>
+  <div class="kpi"><span class="eyebrow">Avaliações a moderar</span><span class="k num">{{ pending_reviews }}</span></div>
+</div>
+
+<div class="pbox">
+  <div class="pbox-head"><b>Pedidos recentes</b><a class="btn" href="{% url 'panel:pedidos' %}" style="padding:6px 14px; font-size:.8rem">Ver todos</a></div>
+  <div class="scroll-x">
+    <table class="ptable">
+      <thead><tr><th>Código</th><th>Cliente</th><th>Status</th><th class="right">Total</th></tr></thead>
+      <tbody>
+        {% for pedido in recent_orders %}
+          <tr>
+            <td><a href="{% url 'panel:pedido_detalhe' pedido.pk %}" class="mono">{{ pedido.code }}</a></td>
+            <td>{{ pedido.customer_name }}</td>
+            <td><span class="status-badge {{ pedido.status }}">{{ pedido.get_status_display }}</span></td>
+            <td class="right">R$ {{ pedido.total|floatformat:2 }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="muted">Nenhum pedido ainda.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pbox">
+  <div class="pbox-head"><b>Estoque acabando</b><a class="btn" href="{% url 'panel:produtos' %}" style="padding:6px 14px; font-size:.8rem">Ver produtos</a></div>
+  <div class="scroll-x">
+    <table class="ptable">
+      <thead><tr><th>Produto</th><th class="right">Estoque</th></tr></thead>
+      <tbody>
+        {% for produto in low_stock %}
+          <tr>
+            <td><a href="{% url 'panel:produto_editar' produto.pk %}">{{ produto.name }}</a></td>
+            <td class="right">{{ produto.stock }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="2" class="muted">Nenhum produto com estoque baixo.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

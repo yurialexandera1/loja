@@ -1,0 +1,30 @@
+{% extends 'store/base.html' %}
+{% block title %}Blog — Case See{% endblock %}
+{% block description %}Histórias, novidades e conteúdo sobre inclusão e acessórios da Case See.{% endblock %}
+
+{% block content %}
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div><span class="eyebrow">Case See</span><h2 style="margin-top:8px">Blog</h2></div>
+    </div>
+
+    {% if posts %}
+      <div class="catalog">
+        {% for post in posts %}
+          <article class="card">
+            <a class="shot" href="{% url 'store:blog_post' post.slug %}"><svg aria-hidden="true"><use href="#i-{{ post.cover_icon|default:'package' }}"></use></svg></a>
+            <div class="card-body">
+              <span class="kicker">{{ post.created_at|date:"d/m/Y" }}</span>
+              <a class="pname" href="{% url 'store:blog_post' post.slug %}">{{ post.title }}</a>
+              {% if post.excerpt %}<p class="muted" style="font-size:.85rem">{{ post.excerpt }}</p>{% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty"><h2>Nenhum artigo ainda</h2><p>Em breve, histórias sobre inclusão e novidades da loja.</p></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
