@@ -215,17 +215,18 @@ main { flex: 1; }
 }
 .buy-btn:hover { background: var(--accent-deep); box-shadow: 0 6px 16px rgba(166, 58, 17, .3); transform: translateY(-2px); }
 .buy-btn .pill { background: rgba(0, 0, 0, .15); border-radius: 999px; padding: 2px 8px; font-size: .75rem; font-weight: 800; }
-.navbar-row { display: flex; align-items: center; gap: 12px; position: relative; min-width: 0; }
+.navbar-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.navrow-fade { position: relative; min-width: 0; flex: 1; }
+.navrow-fade::after {
+  content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 24px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--paper));
+}
 .navrow {
-  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; min-width: 0; flex: 1;
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; min-width: 0;
   cursor: grab; -ms-overflow-style: none;
 }
 .navrow::-webkit-scrollbar { display: none; }
 .navrow:active { cursor: grabbing; }
-.navbar-row::after {
-  content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 32px; pointer-events: none;
-  background: linear-gradient(90deg, transparent, var(--paper));
-}
 .navutil { display: flex; gap: 4px; flex: none; padding: 10px 0; }
 .navutil a { padding: 8px 12px; font-size: .84rem; font-weight: 650; color: var(--ink-3); white-space: nowrap; border-radius: 999px; transition: all .2s var(--ease); }
 .navutil a:hover { color: var(--ink); background: var(--surface); }
@@ -235,8 +236,19 @@ main { flex: 1; }
 .navlink.incl { color: var(--accent-2); }
 .navlink.incl:hover { background: var(--accent-2-soft); }
 .navlink.incl.on { background: var(--accent-2); color: #fff; }
-.navlink-more { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); color: var(--ink-3); }
+.navlink-more { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); color: var(--ink-3); cursor: pointer; }
 .navlink-more:hover { border-color: var(--ink-3); background: var(--surface); }
+.navmore { position: relative; flex: none; }
+.navmore-panel {
+  position: absolute; top: calc(100% + 8px); left: 0; z-index: calc(var(--z-header) + 1);
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-m); box-shadow: var(--shadow-l);
+  padding: 8px; display: grid; grid-template-columns: repeat(2, minmax(160px, 1fr)); gap: 2px;
+  max-height: 60vh; overflow-y: auto; width: max-content; max-width: 480px;
+}
+.navmore-link { display: flex; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: var(--r-s); font-size: .84rem; font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+.navmore-link:hover { background: var(--surface); color: var(--ink); }
+.navmore-link.on { background: var(--ink); color: var(--ground); }
+.navmore-link .c { color: var(--ink-3); font-variant-numeric: tabular-nums; font-size: .78rem; }
 .buy-btn .buy-label { display: inline; }
 
 /* botoes */

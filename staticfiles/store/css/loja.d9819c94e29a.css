@@ -5,16 +5,16 @@
 
 @font-face {
   font-family: "Fraunces Var";
-  src: url("../fonts/fraunces-variable.woff2") format("woff2-variations"),
-       url("../fonts/fraunces-variable.woff2") format("woff2");
+  src: url("../fonts/fraunces-variable.069cb90e11a3.woff2") format("woff2-variations"),
+       url("../fonts/fraunces-variable.069cb90e11a3.woff2") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Work Sans Var";
-  src: url("../fonts/worksans-variable.woff2") format("woff2-variations"),
-       url("../fonts/worksans-variable.woff2") format("woff2");
+  src: url("../fonts/worksans-variable.97b33529e13b.woff2") format("woff2-variations"),
+       url("../fonts/worksans-variable.97b33529e13b.woff2") format("woff2");
   font-weight: 300 700;
   font-style: normal;
   font-display: swap;
@@ -215,18 +215,17 @@ main { flex: 1; }
 }
 .buy-btn:hover { background: var(--accent-deep); box-shadow: 0 6px 16px rgba(166, 58, 17, .3); transform: translateY(-2px); }
 .buy-btn .pill { background: rgba(0, 0, 0, .15); border-radius: 999px; padding: 2px 8px; font-size: .75rem; font-weight: 800; }
-.navbar-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.navrow-fade { position: relative; min-width: 0; flex: 1; }
-.navrow-fade::after {
-  content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 24px; pointer-events: none;
-  background: linear-gradient(90deg, transparent, var(--paper));
-}
+.navbar-row { display: flex; align-items: center; gap: 12px; position: relative; min-width: 0; }
 .navrow {
-  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; min-width: 0;
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; min-width: 0; flex: 1;
   cursor: grab; -ms-overflow-style: none;
 }
 .navrow::-webkit-scrollbar { display: none; }
 .navrow:active { cursor: grabbing; }
+.navbar-row::after {
+  content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 32px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--paper));
+}
 .navutil { display: flex; gap: 4px; flex: none; padding: 10px 0; }
 .navutil a { padding: 8px 12px; font-size: .84rem; font-weight: 650; color: var(--ink-3); white-space: nowrap; border-radius: 999px; transition: all .2s var(--ease); }
 .navutil a:hover { color: var(--ink); background: var(--surface); }

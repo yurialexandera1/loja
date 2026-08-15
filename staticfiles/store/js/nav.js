@@ -38,6 +38,7 @@
   if (navrow) {
     var isDown = false, startX, scrollLeft;
     navrow.addEventListener('mousedown', function (e) {
+      if (e.target.closest('[data-navmore-toggle]')) return;
       isDown = true;
       startX = e.pageX - navrow.offsetLeft;
       scrollLeft = navrow.scrollLeft;
@@ -49,6 +50,30 @@
       e.preventDefault();
       var x = e.pageX - navrow.offsetLeft;
       navrow.scrollLeft = scrollLeft - (x - startX);
+    });
+  }
+
+  var moreToggle = document.querySelector('[data-navmore-toggle]');
+  var morePanel = document.querySelector('[data-navmore-panel]');
+  if (moreToggle && morePanel) {
+    moreToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = !morePanel.hidden;
+      morePanel.hidden = isOpen;
+      moreToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+    document.addEventListener('click', function (e) {
+      if (!morePanel.hidden && !e.target.closest('.navmore')) {
+        morePanel.hidden = true;
+        moreToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !morePanel.hidden) {
+        morePanel.hidden = true;
+        moreToggle.setAttribute('aria-expanded', 'false');
+        moreToggle.focus();
+      }
     });
   }
 })();
