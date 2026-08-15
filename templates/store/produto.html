@@ -1,5 +1,5 @@
 {% extends 'store/base.html' %}
-{% load static %}
+{% load static l10n %}
 {% block title %}{{ product.name }} — Case See{% endblock %}
 {% block description %}{{ product.description|striptags|truncatewords:30 }}{% endblock %}
 {% block og_type %}product{% endblock %}
@@ -18,14 +18,14 @@
   {% if product.average_rating %}
   "aggregateRating": {
     "@type": "AggregateRating",
-    "ratingValue": {{ product.average_rating }},
+    "ratingValue": {{ product.average_rating|unlocalize }},
     "reviewCount": {{ product.review_count }}
   },
   {% endif %}
   "offers": {
     "@type": "Offer",
     "priceCurrency": "BRL",
-    "price": {{ product.price }},
+    "price": {{ product.price|unlocalize }},
     "availability": "https://schema.org/{% if product.in_stock %}InStock{% else %}OutOfStock{% endif %}",
     "url": "https://{{ request.get_host }}{% url 'store:produto' product.slug %}"
   }
@@ -77,7 +77,7 @@
         <a href="{% url 'store:produtos' %}?categoria={{ product.category.slug }}">{{ product.category.name }}</a>
       </div>
       {% if product.is_inclusive %}
-        <span class="eyebrow" style="color:var(--incl)">Linha inclusiva{% if product.brand %} · {{ product.brand.name }}{% endif %}</span>
+        <span class="eyebrow" style="color:var(--accent-2)">Linha inclusiva{% if product.brand %} · {{ product.brand.name }}{% endif %}</span>
       {% elif product.brand %}
         <span class="eyebrow">{{ product.brand.name }}</span>
       {% endif %}
