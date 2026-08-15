@@ -512,10 +512,14 @@ main { flex: 1; }
   .fieldgrid { grid-template-columns: 1fr; }
   .trust { grid-template-columns: 1fr; }
   .fgrid { grid-template-columns: 1fr; }
-  .hero { padding: 36px 0 30px; }
+  .hero-modern { padding: 48px 0 40px; }
+  .hero-buttons { flex-direction: column; }
+  .hero-buttons .btn { width: 100%; }
+  .hero-benefits { grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 20px; }
   .hero-mosaic { gap: 10px; padding: 7%; }
   .hero-facts { gap: 22px; }
   .cat-showcase { grid-auto-columns: 124px; gap: 12px; }
+  .strip { padding: 32px 24px; gap: 20px; }
   .panel-main { padding: 18px 16px 44px; gap: 16px; }
   .kpis { grid-template-columns: 1fr 1fr; gap: 10px; }
 }
