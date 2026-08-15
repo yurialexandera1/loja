@@ -221,6 +221,12 @@ main { flex: 1; }
 .buy-btn:hover { background: var(--accent-deep); box-shadow: 0 6px 16px rgba(166, 58, 17, .3); transform: translateY(-2px); }
 .buy-btn .pill { background: rgba(0, 0, 0, .15); border-radius: 999px; padding: 2px 8px; font-size: .75rem; font-weight: 800; }
 .navbar-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.navbar-row-utility { padding: 9px 0; }
+.breadcrumb-home {
+  display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 650;
+  color: var(--ink-3); transition: color .2s var(--ease);
+}
+.breadcrumb-home:hover { color: var(--accent); }
 .navrow-fade { position: relative; min-width: 0; flex: 0 1 auto; }
 .navrow-fade::after {
   content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 24px; pointer-events: none;

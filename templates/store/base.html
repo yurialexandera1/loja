@@ -103,7 +103,7 @@
         <span class="buy-label">Meu pedido</span>{% if cart_count %} <span class="pill num">{{ cart_count }}</span>{% endif %}
       </a>
     </div>
-    <div class="navbar-row">
+    <div class="navbar-row{% if hide_nav_categories %} navbar-row-utility{% endif %}">
       {% if not hide_nav_categories %}
       <div class="navrow-fade">
         <nav class="navrow" aria-label="Navegação principal">
@@ -115,11 +115,7 @@
         </nav>
       </div>
       {% else %}
-      <div class="navrow-fade">
-        <nav class="navrow" aria-label="Navegação principal">
-          <a class="navlink" href="{% url 'store:home' %}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin-right:6px;vertical-align:-2px"><path d="m15 18-6-6 6-6"/></svg>Início</a>
-        </nav>
-      </div>
+      <a class="breadcrumb-home" href="{% url 'store:home' %}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Início</a>
       {% endif %}
       <div class="navutil">
         <a href="{% url 'store:blog_lista' %}">Blog</a>
