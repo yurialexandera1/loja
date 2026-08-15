@@ -558,6 +558,9 @@ main { flex: 1; }
 }
 .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
 .errorlist { list-style: none; margin: 0; padding: 0; color: var(--crit); font-size: .74rem; }
+.coupon-disclosure { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+.coupon-disclosure summary { cursor: pointer; font-size: .85rem; font-weight: 650; color: var(--ink-2); }
+.coupon-disclosure summary:hover { color: var(--accent); }
 
 .summary { position: sticky; top: 96px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-m); overflow: hidden; }
 .summary-head { padding: 18px 20px; border-bottom: 1px solid var(--line-soft); display: flex; justify-content: space-between; align-items: center; }
