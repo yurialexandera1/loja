@@ -33,4 +33,22 @@
   panel.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { closeNav(); toggle.focus(); }
   });
+
+  var navrow = document.querySelector('.navrow');
+  if (navrow) {
+    var isDown = false, startX, scrollLeft;
+    navrow.addEventListener('mousedown', function (e) {
+      isDown = true;
+      startX = e.pageX - navrow.offsetLeft;
+      scrollLeft = navrow.scrollLeft;
+    });
+    window.addEventListener('mouseup', function () { isDown = false; });
+    navrow.addEventListener('mouseleave', function () { isDown = false; });
+    navrow.addEventListener('mousemove', function (e) {
+      if (!isDown) return;
+      e.preventDefault();
+      var x = e.pageX - navrow.offsetLeft;
+      navrow.scrollLeft = scrollLeft - (x - startX);
+    });
+  }
 })();

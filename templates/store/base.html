@@ -111,15 +111,20 @@
         <span class="buy-label">Meu pedido</span>{% if cart_count %} <span class="pill num">{{ cart_count }}</span>{% endif %}
       </a>
     </div>
-    <nav class="navrow" aria-label="Navegação principal">
-      <a class="navlink{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}"{% if not categoria_atual %} aria-current="page"{% endif %}>Todos os produtos</a>
-      {% for cat in nav_categories %}
-      <a class="navlink{% if categoria_atual == cat.slug %} on{% endif %}" href="{% url 'store:produtos' %}?categoria={{ cat.slug }}"{% if categoria_atual == cat.slug %} aria-current="page"{% endif %}>{{ cat.name }}</a>
-      {% endfor %}
-      <a class="navlink incl{% if categoria_atual == 'inclusivos' %} on{% endif %}" href="{% url 'store:produtos' %}?categoria=inclusivos"{% if categoria_atual == 'inclusivos' %} aria-current="page"{% endif %}>Linha inclusiva</a>
-      <a class="navlink" href="{% url 'store:blog_lista' %}">Blog</a>
-      <a class="navlink" href="{% url 'store:indicar' %}">Indique e ganhe</a>
-    </nav>
+    <div class="navbar-row">
+      <nav class="navrow" aria-label="Navegação principal">
+        <a class="navlink{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}"{% if not categoria_atual %} aria-current="page"{% endif %}>Todos os produtos</a>
+        {% for cat in nav_categories|slice:":6" %}
+        <a class="navlink{% if categoria_atual == cat.slug %} on{% endif %}" href="{% url 'store:produtos' %}?categoria={{ cat.slug }}"{% if categoria_atual == cat.slug %} aria-current="page"{% endif %}>{{ cat.name }}</a>
+        {% endfor %}
+        <a class="navlink incl{% if categoria_atual == 'inclusivos' %} on{% endif %}" href="{% url 'store:produtos' %}?categoria=inclusivos"{% if categoria_atual == 'inclusivos' %} aria-current="page"{% endif %}>Linha inclusiva</a>
+        <a class="navlink navlink-more" href="{% url 'store:produtos' %}">Mais categorias<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+      </nav>
+      <div class="navutil">
+        <a href="{% url 'store:blog_lista' %}">Blog</a>
+        <a href="{% url 'store:indicar' %}">Indique e ganhe</a>
+      </div>
+    </div>
   </div>
 </header>
 
