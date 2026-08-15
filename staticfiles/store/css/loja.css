@@ -328,6 +328,37 @@ main { flex: 1; }
 .gallery-img img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-img svg { width: 56%; height: 56%; }
 
+/* value props */
+.valueprops { border-bottom: 1px solid var(--line-soft); background: var(--paper); }
+.valueprops-inner {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4);
+  padding: var(--space-5) 0;
+}
+.vprop { display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 650; color: var(--ink-2); }
+.vprop svg { width: 20px; height: 20px; color: var(--accent); flex: none; }
+.vprop.pix svg { color: var(--accent-2); }
+
+.stat-num { font-family: var(--display); font-size: 1em; font-weight: 800; color: var(--accent-2); font-variant-numeric: tabular-nums; }
+
+.strip-incl { border-color: var(--accent-2); background: linear-gradient(135deg, var(--accent-2-soft) 0%, #eef5f2 100%); box-shadow: 0 4px 16px rgba(44, 95, 111, .1); }
+.strip-incl h3 { color: var(--accent-2); }
+
+.locator { padding-bottom: var(--space-10); }
+.locator-inner { display: grid; grid-template-columns: 1.1fr .9fr; gap: var(--space-8); align-items: center; }
+.locator h2 { margin-top: 8px; }
+.locator-card {
+  display: flex; align-items: center; gap: 16px; background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--r-l); padding: var(--space-6); box-shadow: var(--shadow-m);
+}
+.locator-card b { display: block; font-family: var(--display); font-size: 1.1rem; }
+.locator-card span { font-size: .82rem; color: var(--ink-3); }
+.locator-card .dot { width: 12px; height: 12px; flex: none; }
+
+@media (max-width: 640px) {
+  .valueprops-inner { grid-template-columns: 1fr 1fr; }
+  .locator-inner { grid-template-columns: 1fr; }
+}
+
 /* faixas */
 .band {
   padding: 56px 0; position: relative;
