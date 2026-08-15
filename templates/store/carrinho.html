@@ -75,4 +75,20 @@ document.querySelectorAll('form[action*="add_cart"]').forEach(function(form) {
 });
 </script>
 
+
+<script>
+document.querySelectorAll('form[action*="update_cart"]').forEach(function(form) {
+  form.addEventListener('submit', function(e) {
+    var btn = form.querySelector('button[type="submit"]');
+    if (btn) { btn.textContent = 'Atualizando...'; btn.disabled = true; }
+  });
+});
+document.querySelectorAll('form[action*="add_cart"]').forEach(function(form) {
+  form.addEventListener('submit', function(e) {
+    var btn = form.querySelector('button[type="submit"]');
+    if (btn) { btn.textContent = 'Mandando...'; btn.disabled = true; }
+  });
+});
+</script>
+
 {% endblock %}
