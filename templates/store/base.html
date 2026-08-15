@@ -104,6 +104,7 @@
       </a>
     </div>
     <div class="navbar-row">
+      {% if not hide_nav_categories %}
       <div class="navrow-fade">
         <nav class="navrow" aria-label="Navegação principal">
           <a class="navlink{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}"{% if not categoria_atual %} aria-current="page"{% endif %}>Todos os produtos</a>
@@ -113,6 +114,7 @@
           <a class="navlink incl{% if categoria_atual == 'inclusivos' %} on{% endif %}" href="{% url 'store:produtos' %}?categoria=inclusivos"{% if categoria_atual == 'inclusivos' %} aria-current="page"{% endif %}>Linha inclusiva</a>
         </nav>
       </div>
+      {% endif %}
       <div class="navutil">
         <a href="{% url 'store:blog_lista' %}">Blog</a>
         <a href="{% url 'store:indicar' %}">Indique e ganhe</a>

@@ -131,6 +131,7 @@ def produtos(request):
             'page_obj': pagina,
             'categories': categorias,
             'nav_categories': categorias,
+            'hide_nav_categories': True,
             'categoria_atual': categoria,
             'busca': busca,
             'preco_min': preco_min,
