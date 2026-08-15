@@ -263,9 +263,13 @@ main { flex: 1; }
 .gallery-img svg { width: 56%; height: 56%; }
 
 /* faixas */
-.band { padding: 48px 0; }
-.band-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
-.band-head h2 { font-size: 1.7rem; }
+.band {
+  padding: 56px 0; position: relative;
+}
+.band:nth-child(even) { background: var(--surface); margin: 0 calc(-50vw + 50%); padding: 56px 50vw; }
+.band-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 32px; }
+.band-head h2 { font-size: 1.85rem; letter-spacing: -.03em; }
+.band-head .eyebrow { margin-bottom: 8px; display: block; }
 .toolbar {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 0;
   border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); margin-bottom: 24px;
@@ -299,24 +303,30 @@ main { flex: 1; }
 
 /* vitrine de categorias na home — cartao com foto real em vez de chip de texto */
 .cat-showcase {
-  display: grid; grid-auto-flow: column; grid-auto-columns: 148px; gap: 18px;
-  overflow-x: auto; padding-bottom: 6px; scrollbar-width: none;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 160px; gap: 16px;
+  overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;
 }
 .cat-showcase::-webkit-scrollbar { display: none; }
-.cat-card { display: flex; flex-direction: column; gap: 10px; }
+.cat-card { display: flex; flex-direction: column; gap: 12px; }
 .cat-card-shot {
   aspect-ratio: 1/1; border-radius: var(--r-m); overflow: hidden; background: var(--surface);
-  display: grid; place-items: center; box-shadow: var(--shadow-s);
-  transition: transform .22s var(--ease), box-shadow .22s var(--ease);
+  display: grid; place-items: center; box-shadow: var(--shadow-m);
+  transition: all .26s var(--ease);
+  border: 1px solid var(--line-soft);
 }
-.cat-card:hover .cat-card-shot { transform: translateY(-4px); box-shadow: var(--shadow-m); }
+.cat-card:hover .cat-card-shot {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--shadow-l);
+  border-color: var(--accent-soft);
+}
 .cat-card-shot img { width: 100%; height: 100%; object-fit: cover; }
-.cat-card-shot svg { width: 46%; height: 46%; color: var(--ink-3); }
+.cat-card-shot svg { width: 48%; height: 48%; color: var(--accent); transition: all .26s var(--ease); }
+.cat-card:hover .cat-card-shot svg { transform: scale(1.1); }
 .cat-card-label {
   display: flex; justify-content: space-between; align-items: baseline; gap: 6px;
-  font-size: .82rem; font-weight: 650; color: var(--ink);
+  font-size: .85rem; font-weight: 700; color: var(--ink); letter-spacing: -.01em;
 }
-.cat-card-label .c { font-size: .72rem; font-weight: 600; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.cat-card-label .c { font-size: .74rem; font-weight: 650; color: var(--accent); font-variant-numeric: tabular-nums; }
 
 /* grade de produtos */
 .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 22px; }
