@@ -7,7 +7,7 @@
     <form method="post">
       {% csrf_token %}
       <div class="band-head" style="margin-bottom:18px">
-        <div><span class="eyebrow">Passo 2 de 2</span><h2 style="margin-top:8px">Entrega e pagamento</h2></div>
+        <div><span class="eyebrow">Passo 2 de 2</span><h2 style="margin-top:8px">Sua entrega</h2></div>
         <a class="btn" href="{% url 'store:carrinho' %}">Voltar ao pedido</a>
       </div>
 
@@ -23,9 +23,10 @@
 
       <div class="panel">
         <h3>Onde entregar</h3>
+        <p class="muted" style="font-size:.87rem; margin-bottom:12px">Sem cadastro. Você confirma tudo antes de enviar. Preenche apenas o necessário pra entrega.</p>
         <div class="fieldgrid">
           {% for field in form %}
-            <div class="field{% if field.name == 'customer_name' or field.name == 'address' or field.name == 'shipping_option' %} wide{% endif %}">
+            <div class="field{% if field.name in 'customer_name,address,city,zip,shipping_option' %} wide{% endif %}">
               <label for="{{ field.id_for_label }}">{{ field.label }}</label>
               {{ field }}
               {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
@@ -37,7 +38,7 @@
       <div class="panel">
         <h3>Como pagar</h3>
         <p class="muted" style="font-size:.87rem">
-          Confirmamos o pedido pelo WhatsApp e combinamos o pagamento: PIX à vista com desconto, cartão, ou na retirada da loja do Recreio.
+          Confirmamos seu pedido pelo WhatsApp e você paga: PIX à vista com desconto de 3%, cartão, ou retirada na loja do Recreio.
         </p>
       </div>
 
@@ -54,7 +55,7 @@
         <div class="srow"><span>Frete</span><span>conforme escolha acima</span></div>
         <div class="stotal"><span class="lbl">Total dos itens</span><span class="val">R$ {{ total|floatformat:2 }}</span></div>
       </div>
-      <div class="summary-foot">O frete entra no total do pedido confirmado.</div>
+      <div class="summary-foot">Sem cadastro, sem senha. Confirma no WhatsApp antes de pagar.</div>
     </div>
   </div>
 </div>

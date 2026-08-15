@@ -43,7 +43,7 @@ Espera: product (core.models.Product)
         <input class="qty-input" type="number" name="qty" value="1" min="1" max="{{ product.stock }}"
                aria-label="Quantidade de {{ product.name }}"{% if not product.in_stock %} disabled{% endif %}>
       </div>
-      <button class="addbtn" type="submit"{% if not product.in_stock %} disabled{% endif %}>
+      <button class="addbtn" type="submit" aria-label="Adicionar {{ product.name }} ao pedido"{% if not product.in_stock %} disabled{% endif %}>
         {% if product.in_stock %}Adicionar ao pedido{% else %}Indisponível{% endif %}
       </button>
     </form>

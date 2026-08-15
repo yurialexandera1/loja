@@ -2,40 +2,42 @@
 {% block title %}Case See — Acessórios que fazem você brilhar{% endblock %}
 
 {% block content %}
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="eyebrow">Recreio dos Bandeirantes · Rio de Janeiro</span>
-      <h1>Acessórios que fazem você <em>brilhar</em>.</h1>
-      <div class="rule"></div>
-      <p class="lede">{{ total_products }} produtos com estoque conferido, preço à vista no PIX e entrega para todo o Brasil. Monte seu pedido aqui e feche no WhatsApp.</p>
-      <div class="hero-actions">
-        <a class="btn primary" href="{% url 'store:produtos' %}">Ver catálogo completo</a>
-        {% if inclusive_count %}<a class="btn teal" href="{% url 'store:produtos' %}?categoria=inclusivos">Conhecer a linha inclusiva</a>{% endif %}
+<section class="hero hero-modern">
+  <div class="hero-gradient"></div>
+  <div class="wrap hero-flex">
+    <div class="hero-left">
+      <div class="hero-badge"><span class="pulse"></span> Premium Seleção</div>
+      <h1>Estilo que <em>brilha</em> e expressa você</h1>
+      <p>{{ total_products }} produtos premium com qualidade garantida. Preço à vista PIX, entrega rápida. Feche tudo no WhatsApp — simples e seguro.</p>
+      <div class="hero-buttons">
+        <a href="{% url 'store:produtos' %}" class="btn btn-primary">Explorar agora</a>
+        {% if inclusive_count %}<a href="{% url 'store:produtos' %}?categoria=inclusivos" class="btn btn-outline">Linha inclusiva</a>{% endif %}
       </div>
-      <div class="hero-facts">
-        <div class="fact"><div class="k num">{{ total_products }}</div><div class="v">produtos no catálogo</div></div>
-        {% if inclusive_count %}<div class="fact"><div class="k num">{{ inclusive_count }}</div><div class="v">itens da linha inclusiva</div></div>{% endif %}
-        <div class="fact"><div class="k num">R$ 199</div><div class="v">frete grátis no Rio a partir de</div></div>
+      <div class="hero-benefits">
+        <div class="benefit"><strong>{{ total_products }}+</strong> produtos</div>
+        <div class="benefit"><strong>Frete</strong> grátis +R$199</div>
+        <div class="benefit"><strong>24h</strong> resposta</div>
+        {% if inclusive_count %}<div class="benefit"><strong>{{ inclusive_count }}</strong> inclusivos</div>{% endif %}
       </div>
     </div>
-    <div class="hero-art">
+    <div class="hero-right">
       {% if featured %}
-        <div class="hero-mosaic">
+        <div class="hero-gallery">
           {% for product in featured|slice:":4" %}
-            <a class="hero-tile" href="{% url 'store:produto' product.slug %}">
-              {% if product.main_image %}
-                <img src="{{ product.main_image.image.url }}" alt="{{ product.name }}" loading="eager">
-              {% else %}
-                <svg aria-hidden="true"><use href="#i-{{ product.icon|default:'package' }}"></use></svg>
-              {% endif %}
+            <a href="{% url 'store:produto' product.slug %}" class="gallery-item" title="{{ product.name }}">
+              <div class="gallery-img">
+                {% if product.main_image %}
+                  <img src="{{ product.main_image.image.url }}" alt="{{ product.name }}" loading="eager">
+                {% else %}
+                  <svg aria-hidden="true"><use href="#i-{{ product.icon|default:'package' }}"></use></svg>
+                {% endif %}
+              </div>
             </a>
           {% endfor %}
         </div>
       {% else %}
-        <svg aria-hidden="true"><use href="#i-smartphone"></use></svg>
+        <div class="hero-empty"><svg aria-hidden="true"><use href="#i-smartphone"></use></svg></div>
       {% endif %}
-      <span class="hero-badge"><span class="dot"></span> Estoque atualizado hoje</span>
     </div>
   </div>
 </section>
