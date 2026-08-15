@@ -216,7 +216,7 @@ main { flex: 1; }
 .buy-btn:hover { background: var(--accent-deep); box-shadow: 0 6px 16px rgba(166, 58, 17, .3); transform: translateY(-2px); }
 .buy-btn .pill { background: rgba(0, 0, 0, .15); border-radius: 999px; padding: 2px 8px; font-size: .75rem; font-weight: 800; }
 .navbar-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.navrow-fade { position: relative; min-width: 0; flex: 1; }
+.navrow-fade { position: relative; min-width: 0; flex: 0 1 auto; }
 .navrow-fade::after {
   content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 24px; pointer-events: none;
   background: linear-gradient(90deg, transparent, var(--paper));
@@ -227,7 +227,7 @@ main { flex: 1; }
 }
 .navrow::-webkit-scrollbar { display: none; }
 .navrow:active { cursor: grabbing; }
-.navutil { display: flex; gap: 4px; flex: none; padding: 10px 0; }
+.navutil { display: flex; gap: 4px; flex: none; padding: 10px 0; margin-left: auto; }
 .navutil a { padding: 8px 12px; font-size: .84rem; font-weight: 650; color: var(--ink-3); white-space: nowrap; border-radius: 999px; transition: all .2s var(--ease); }
 .navutil a:hover { color: var(--ink); background: var(--surface); }
 .navlink { padding: 8px 14px; font-size: .84rem; font-weight: 650; color: var(--ink-2); white-space: nowrap; transition: all .2s var(--ease); border-radius: 999px; }
