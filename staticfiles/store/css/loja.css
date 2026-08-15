@@ -394,8 +394,8 @@ main { flex: 1; }
 .cat-link:hover { background: var(--surface); color: var(--ink); }
 .cat-link.on { background: var(--ink); color: var(--ground); }
 .cat-link.on .c { color: var(--ground); opacity: .7; }
-.cat-link.incl { color: var(--incl); }
-.cat-link.incl.on { background: var(--incl); color: #fff; }
+.cat-link.incl { color: var(--accent-2); }
+.cat-link.incl.on { background: var(--accent-2); color: #fff; }
 .cat-link .c { font-variant-numeric: tabular-nums; opacity: .55; font-weight: 650; }
 
 /* vitrine de categorias na home — cartao com foto real em vez de chip de texto */
