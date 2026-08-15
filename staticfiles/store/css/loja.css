@@ -638,30 +638,42 @@ main { flex: 1; }
 
 /* rodape */
 .site-footer {
-  border-top: 1px solid var(--line); background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
-  padding: 56px 0 52px; margin-top: 64px;
+  background: var(--ink); color: var(--ground); padding: var(--space-10) 0 var(--space-6); margin-top: 64px;
 }
-.wa-strip {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  background: var(--good); color: #fff; border-radius: var(--r-m); padding: 14px 20px;
-  font-size: .85rem; font-weight: 650; margin-bottom: 44px; box-shadow: 0 6px 18px rgba(44, 115, 67, .25);
-  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+.fstatement {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); flex-wrap: wrap;
+  padding-bottom: var(--space-8); margin-bottom: var(--space-8); border-bottom: 1px solid rgba(250, 247, 243, .14);
 }
-.wa-strip:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(44, 115, 67, .32); }
+.fstatement h2 {
+  font-size: var(--step-3); color: var(--ground); letter-spacing: -.03em; max-width: 20ch;
+}
+.wa-cta {
+  display: inline-flex; align-items: center; gap: 10px; background: var(--good); color: #fff;
+  border-radius: 999px; padding: 14px 26px; font-weight: 700; font-size: .92rem; white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(44, 115, 67, .3); transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.wa-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(44, 115, 67, .38); }
 .fgrid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
-.fgrid p { font-size: .86rem; color: var(--ink-2); margin-top: 12px; max-width: 42ch; line-height: 1.58; }
+.fgrid p { font-size: .86rem; color: rgba(250, 247, 243, .68); margin-top: 12px; max-width: 42ch; line-height: 1.58; }
 .fgrid .logo { margin-bottom: 6px; }
+.fgrid .logo b { color: var(--ground); }
+.fgrid .eyebrow { color: rgba(250, 247, 243, .5); }
 .flist { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; font-size: .85rem; }
-.flist a { color: var(--ink-2); transition: color .2s var(--ease); display: flex; align-items: center; gap: 8px; }
+.flist a { color: rgba(250, 247, 243, .78); transition: color .2s var(--ease); display: flex; align-items: center; gap: 8px; }
 .flist a svg { flex: none; opacity: .7; }
 .flist a:hover { color: var(--accent); font-weight: 600; }
-.flist span { color: var(--ink-2); display: flex; align-items: center; gap: 8px; }
+.flist span { color: rgba(250, 247, 243, .68); display: flex; align-items: center; gap: 8px; }
 .flist span svg { flex: none; opacity: .7; }
 .eyebrow { display: block; margin-bottom: 12px; }
-.fbottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: .77rem; color: var(--ink-3); font-weight: 600; }
+.fbottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(250, 247, 243, .14); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: .77rem; color: rgba(250, 247, 243, .5); font-weight: 600; }
 .pay-row { display: flex; align-items: center; gap: 8px; }
-.pay-chip { border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; font-size: .72rem; font-weight: 700; color: var(--ink-2); background: var(--paper); }
-.pay-chip.pix { background: var(--accent-2-soft); border-color: var(--accent-2); color: var(--accent-2-deep); }
+.pay-chip { border: 1px solid rgba(250, 247, 243, .22); border-radius: 6px; padding: 4px 10px; font-size: .72rem; font-weight: 700; color: rgba(250, 247, 243, .8); background: transparent; }
+.pay-chip.pix { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+
+@media (max-width: 640px) {
+  .fstatement { flex-direction: column; align-items: flex-start; }
+  .fstatement h2 { font-size: var(--step-2); }
+}
 
 .empty { text-align: center; padding: 64px 24px; color: var(--ink-2); }
 .empty h2 { font-size: 1.4rem; margin-bottom: 10px; }
