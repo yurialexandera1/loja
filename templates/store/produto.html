@@ -1,4 +1,5 @@
 {% extends 'store/base.html' %}
+{% load static %}
 {% block title %}{{ product.name }} — Case See{% endblock %}
 {% block description %}{{ product.description|striptags|truncatewords:30 }}{% endblock %}
 {% block og_type %}product{% endblock %}
@@ -48,9 +49,9 @@
 <div class="wrap">
   <div class="pdp">
     <div>
-      <div class="stage">
+      <div class="stage" data-gallery-stage>
         {% if product.main_image %}
-          <img src="{{ product.main_image.image.url }}" alt="{{ product.main_image.alt|default:product.name }}">
+          <img src="{{ product.main_image.image.url }}" alt="{{ product.main_image.alt|default:product.name }}" style="transition:opacity .12s var(--ease)">
         {% else %}
           <svg aria-hidden="true"><use href="#i-{{ product.icon|default:'package' }}"></use></svg>
         {% endif %}
@@ -58,7 +59,7 @@
       {% if product.images.count > 1 %}
         <div class="thumbs">
           {% for image in product.images.all %}
-            <span class="thumb"><img src="{{ image.image.url }}" alt="{{ image.alt|default:product.name }}" loading="lazy"></span>
+            <button type="button" class="thumb{% if forloop.first %} is-active{% endif %}" data-gallery-thumb data-full-src="{{ image.image.url }}" data-alt="{{ image.alt|default:product.name }}" aria-label="Ver imagem {{ forloop.counter }} de {{ product.name }}"><img src="{{ image.image.url }}" alt="" loading="lazy"></button>
           {% endfor %}
         </div>
       {% endif %}
@@ -92,17 +93,29 @@
           <span class="badge-save">−{{ product.discount_percent }}% · de R$ {{ product.compare_at_price }}</span>
         {% endif %}
         <div class="big num">R$ {{ product.price }}</div>
-        <div class="alt">R$ {{ product.pix_price }} à vista no PIX</div>
+        <div class="alt pix-alt"><span class="pay-chip pix">PIX</span> R$ {{ product.pix_price }} à vista</div>
+        {% if product.is_low_stock and product.in_stock %}
+          <div class="stock-urgency">Só restam {{ product.stock }} unidade{{ product.stock|pluralize }}</div>
+        {% endif %}
       </div>
 
-      {% if product.in_stock %}
-        <form method="post" action="{% url 'store:add_cart' product.slug %}" class="buyrow">
+      {% if product.variants.all %}
+        <div class="variant-picker" data-variant-picker data-variants="{{ variants_json }}">
+          <span class="eyebrow">Escolha a variante</span>
+          <div class="variant-options" data-variant-options></div>
+          <p class="variant-note" data-variant-note></p>
+        </div>
+      {% endif %}
+
+      {% if product.in_stock or product.variants.all %}
+        <form method="post" action="{% url 'store:add_cart' product.slug %}" class="buyrow" data-atc-trigger data-atc-form>
           {% csrf_token %}
+          {% if product.variants.all %}<input type="hidden" name="variant_id" data-variant-input>{% endif %}
           <label for="qty-input" class="sr-only">Quantidade</label>
           <input id="qty-input" class="qty-input" type="number" name="qty" value="1" min="1" max="{{ product.stock }}" aria-label="Quantidade">
-          <button class="btn primary" type="submit" style="flex:1">Adicionar ao pedido</button>
+          <button class="btn primary" type="submit" style="flex:1" data-atc-submit{% if product.variants.all %} disabled{% endif %}>Adicionar ao pedido</button>
         </form>
-      {% else %}
+      {% elif not product.variants.all %}
         <div class="alert warn">Este produto está esgotado. Fale com a gente no WhatsApp para saber quando volta.</div>
         <a class="btn wa wide" href="https://wa.me/5521995095642?text={{ product.name|urlencode }}">Avisar quando chegar</a>
       {% endif %}
@@ -119,9 +132,11 @@
     <div class="band-head">
       <div>
         <span class="eyebrow">Prova social</span>
-        <h2 style="margin-top:8px; font-size:1.4rem">Avaliações
-          {% if product.review_count %}<span class="muted" style="font-size:1rem; font-weight:600">· {{ product.average_rating }}/5 ({{ product.review_count }})</span>{% endif %}
-        </h2>
+        {% if product.review_count %}
+          <h2 style="margin-top:8px; font-size:1.4rem" class="rating-head"><span class="rating-stars">★★★★★</span> {{ product.average_rating }}/5 <span class="muted" style="font-size:1rem; font-weight:600">· {{ product.review_count }} avaliaç{{ product.review_count|pluralize:"ão,ões" }}</span></h2>
+        {% else %}
+          <h2 style="margin-top:8px; font-size:1.4rem">Avaliações</h2>
+        {% endif %}
       </div>
     </div>
 
@@ -164,5 +179,28 @@
     </section>
   {% endif %}
 </div>
+
+{% if product.in_stock or product.variants.all %}
+<div class="sticky-atc" data-sticky-atc>
+  <div class="wrap sticky-atc-inner">
+    <div class="sticky-atc-info">
+      <b>{{ product.name }}</b>
+      <span class="num">R$ {{ product.price }}</span>
+    </div>
+    <form method="post" action="{% url 'store:add_cart' product.slug %}">
+      {% csrf_token %}
+      {% if product.variants.all %}<input type="hidden" name="variant_id" data-variant-input-mirror>{% endif %}
+      <input class="qty-input" type="number" name="qty" value="1" min="1" max="{{ product.stock }}" aria-label="Quantidade">
+      <button class="btn primary" type="submit"{% if product.variants.all %} data-atc-submit-mirror disabled{% endif %}>Adicionar</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'store/js/gallery.js' %}"></script>
+{% if product.variants.all %}<script src="{% static 'store/js/variant.js' %}"></script>{% endif %}
+<script src="{% static 'store/js/sticky-atc.js' %}"></script>
 {% endblock %}
 
