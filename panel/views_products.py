@@ -189,6 +189,21 @@ def produto_variante_nova(request, pk):
 @login_required(login_url='panel:login')
 @staff_required
 @require_POST
+def produto_variante_editar(request, pk, variant_id):
+    produto = get_object_or_404(Product, pk=pk)
+    variante = get_object_or_404(Variant, pk=variant_id, product=produto)
+    form = VariantForm(request.POST, instance=variante)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Variante atualizada.')
+    else:
+        messages.error(request, 'Não foi possível atualizar a variante. Confira cor, tamanho e estoque.')
+    return redirect('panel:produto_editar', pk=pk)
+
+
+@login_required(login_url='panel:login')
+@staff_required
+@require_POST
 def produto_variante_remover(request, pk, variant_id):
     produto = get_object_or_404(Product, pk=pk)
     Variant.objects.filter(pk=variant_id, product=produto).delete()

@@ -21,6 +21,7 @@ urlpatterns = [
     path('produtos/<int:pk>/fotos/', views_products.produto_foto_nova, name='produto_foto_nova'),
     path('produtos/<int:pk>/fotos/<int:image_id>/remover/', views_products.produto_foto_remover, name='produto_foto_remover'),
     path('produtos/<int:pk>/variantes/', views_products.produto_variante_nova, name='produto_variante_nova'),
+    path('produtos/<int:pk>/variantes/<int:variant_id>/editar/', views_products.produto_variante_editar, name='produto_variante_editar'),
     path('produtos/<int:pk>/variantes/<int:variant_id>/remover/', views_products.produto_variante_remover, name='produto_variante_remover'),
 
     path('categorias/', views_catalog.categorias_list, name='categorias'),
@@ -53,4 +54,6 @@ urlpatterns = [
     path('avaliacoes/<int:pk>/remover/', views_extra.avaliacao_remover, name='avaliacao_remover'),
 
     path('indicacoes/', views_extra.indicacoes_list, name='indicacoes'),
+
+    path('configuracoes/', views.configuracoes, name='configuracoes'),
 ]

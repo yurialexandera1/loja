@@ -1,5 +1,4 @@
-from django.conf import settings
-
+from core.models import get_site_settings
 from store.cart import get_cart
 
 
@@ -9,7 +8,8 @@ def cart_count(request):
 
 
 def tracking_ids(request):
+    site_settings = get_site_settings()
     return {
-        'ga4_id': settings.GA4_MEASUREMENT_ID,
-        'meta_pixel_id': settings.META_PIXEL_ID,
+        'ga4_id': site_settings['ga4_id'],
+        'meta_pixel_id': site_settings['meta_pixel_id'],
     }

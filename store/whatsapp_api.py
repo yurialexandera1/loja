@@ -10,25 +10,26 @@ import json
 import urllib.error
 import urllib.request
 
-from django.conf import settings
-
+from core.models import get_site_settings
 from store.whatsapp import order_message
 
 GRAPH_API_VERSION = 'v20.0'
 
 
 def is_configured():
-    return bool(settings.WHATSAPP_CLOUD_API_TOKEN and settings.WHATSAPP_CLOUD_PHONE_ID)
+    site_settings = get_site_settings()
+    return bool(site_settings['whatsapp_cloud_api_token'] and site_settings['whatsapp_cloud_phone_id'])
 
 
 def send_order_confirmation(order):
     """Envia a confirmacao automaticamente. Retorna True se enviou, False se
     a API nao esta configurada ou a chamada falhou (nunca levanta excecao —
     a compra ja foi concluida, uma falha de notificacao nao pode derruba-la)."""
+    site_settings = get_site_settings()
     if not is_configured() or not order.phone:
         return False
 
-    url = f'https://graph.facebook.com/{GRAPH_API_VERSION}/{settings.WHATSAPP_CLOUD_PHONE_ID}/messages'
+    url = f'https://graph.facebook.com/{GRAPH_API_VERSION}/{site_settings["whatsapp_cloud_phone_id"]}/messages'
     payload = {
         'messaging_product': 'whatsapp',
         'to': _e164(order.phone),
@@ -39,7 +40,7 @@ def send_order_confirmation(order):
         url,
         data=json.dumps(payload).encode('utf-8'),
         headers={
-            'Authorization': f'Bearer {settings.WHATSAPP_CLOUD_API_TOKEN}',
+            'Authorization': f'Bearer {site_settings["whatsapp_cloud_api_token"]}',
             'Content-Type': 'application/json',
         },
         method='POST',

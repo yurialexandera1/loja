@@ -54,10 +54,16 @@
         <tbody>
           {% for variante in produto.variants.all %}
             <tr>
-              <td>{{ variante.color|default:"—" }}</td>
-              <td>{{ variante.size|default:"—" }}</td>
-              <td class="mono">{{ variante.sku|default:"—" }}</td>
-              <td class="right">{{ variante.stock }}</td>
+              <td colspan="4" style="padding:0">
+                <form method="post" action="{% url 'panel:produto_variante_editar' produto.pk variante.pk %}" style="display:flex; gap:8px; align-items:center; padding:8px 18px; flex-wrap:wrap">
+                  {% csrf_token %}
+                  <input type="text" name="color" value="{{ variante.color }}" placeholder="Cor" style="width:110px" class="mono">
+                  <input type="text" name="size" value="{{ variante.size }}" placeholder="Tamanho" style="width:90px" class="mono">
+                  <input type="text" name="sku" value="{{ variante.sku }}" placeholder="Código" style="width:110px" class="mono">
+                  <input type="number" name="stock" value="{{ variante.stock }}" min="0" style="width:80px" class="mono">
+                  <button class="btn" type="submit" style="padding:5px 10px; font-size:.76rem">Salvar</button>
+                </form>
+              </td>
               <td class="ptable-actions">
                 <form method="post" action="{% url 'panel:produto_variante_remover' produto.pk variante.pk %}">
                   {% csrf_token %}<button class="btn" type="submit" style="padding:5px 10px; font-size:.76rem">Remover</button>

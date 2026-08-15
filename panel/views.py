@@ -7,8 +7,8 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from core.models import Coupon, Order, Product, ProductReview
-from panel.forms import PanelLoginForm
+from core.models import Coupon, Order, Product, ProductReview, SiteSettings
+from panel.forms import PanelLoginForm, SiteSettingsForm
 
 LOW_STOCK_LIMIT = 4
 RECENT_ORDERS_LIMIT = 8
@@ -103,3 +103,19 @@ def dashboard(request):
         'top_products': Product.objects.active().order_by('-sold_count')[:TOP_PRODUCTS_LIMIT],
     }
     return render(request, 'panel/dashboard.html', context)
+
+
+@login_required(login_url='panel:login')
+@staff_required
+def configuracoes(request):
+    instance = SiteSettings.objects.filter(pk=1).first()
+    if request.method == 'POST':
+        form = SiteSettingsForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            from django.contrib import messages
+            messages.success(request, 'Configurações salvas.')
+            return redirect('panel:configuracoes')
+    else:
+        form = SiteSettingsForm(instance=instance)
+    return render(request, 'panel/form.html', {'form': form, 'title': 'Configurações', 'active': 'configuracoes'})

@@ -463,3 +463,43 @@ class ShippingZone(models.Model):
 
     def __str__(self):
         return f'{self.name} (R$ {self.price})'
+
+
+class SiteSettings(models.Model):
+    """Configuracoes editaveis pelo painel — sobrepoem o .env quando preenchidas.
+    Singleton: sempre pk=1, uso get_site_settings() em vez de manager custom."""
+
+    ga4_measurement_id = models.CharField('GA4 Measurement ID', max_length=32, blank=True, default='')
+    meta_pixel_id = models.CharField('Meta Pixel ID', max_length=32, blank=True, default='')
+    whatsapp_cloud_api_token = models.CharField('WhatsApp Cloud API Token', max_length=512, blank=True, default='')
+    whatsapp_cloud_phone_id = models.CharField('WhatsApp Cloud Phone ID', max_length=64, blank=True, default='')
+    updated_at = models.DateTimeField('atualizado em', auto_now=True)
+
+    class Meta:
+        verbose_name = 'Configuracoes do site'
+        verbose_name_plural = 'Configuracoes do site'
+
+    def __str__(self):
+        return 'Configuracoes do site'
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+
+def get_site_settings():
+    from django.conf import settings as django_settings
+
+    row = SiteSettings.objects.filter(pk=1).first()
+    return {
+        'ga4_id': (row.ga4_measurement_id if row and row.ga4_measurement_id else django_settings.GA4_MEASUREMENT_ID),
+        'meta_pixel_id': (row.meta_pixel_id if row and row.meta_pixel_id else django_settings.META_PIXEL_ID),
+        'whatsapp_cloud_api_token': (
+            row.whatsapp_cloud_api_token if row and row.whatsapp_cloud_api_token
+            else django_settings.WHATSAPP_CLOUD_API_TOKEN
+        ),
+        'whatsapp_cloud_phone_id': (
+            row.whatsapp_cloud_phone_id if row and row.whatsapp_cloud_phone_id
+            else django_settings.WHATSAPP_CLOUD_PHONE_ID
+        ),
+    }

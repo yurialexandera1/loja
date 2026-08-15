@@ -758,7 +758,12 @@ table.ptable tr:hover td { background: var(--surface); }
 .status-badge.cancelado { background: var(--surface-2); color: var(--ink-3); }
 @media (max-width: 860px) {
   .panel-shell { grid-template-columns: 1fr; }
-  .panel-side { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .panel-side {
+    flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line);
+    scrollbar-width: none; -ms-overflow-style: none; gap: 2px;
+  }
+  .panel-side::-webkit-scrollbar { display: none; }
+  .panel-side a, .panel-side button.plink { width: auto; white-space: nowrap; }
   .panel-side .who, .panel-side .grp { display: none; }
   .kpis { grid-template-columns: 1fr 1fr; }
 }

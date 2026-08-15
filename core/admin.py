@@ -14,6 +14,7 @@ from core.models import (
     ProductReview,
     ReferralCode,
     ShippingZone,
+    SiteSettings,
     Variant,
 )
 
@@ -170,3 +171,15 @@ class ShippingZoneAdmin(admin.ModelAdmin):
     list_filter = ['active']
     list_editable = ['active']
     search_fields = ['name', 'cep_start', 'cep_end']
+
+
+@admin.register(SiteSettings)
+class SiteSettingsAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'updated_at']
+    readonly_fields = ['updated_at']
+
+    def has_add_permission(self, request):
+        return not SiteSettings.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False

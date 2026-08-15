@@ -27,6 +27,7 @@
     <span class="grp eyebrow">Conteúdo</span>
     <a href="{% url 'panel:posts' %}" class="{% if active == 'posts' %}on{% endif %}">Blog</a>
     <span class="grp eyebrow">Loja</span>
+    <a href="{% url 'panel:configuracoes' %}" class="{% if active == 'configuracoes' %}on{% endif %}">Configurações</a>
     <a href="/">Ver a loja</a>
     <form method="post" action="{% url 'panel:logout' %}"><button class="plink" type="submit">Sair</button>{% csrf_token %}</form>
   </aside>
