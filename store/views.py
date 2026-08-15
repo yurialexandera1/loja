@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.db.models import Count, Q
+from django.db.models import Count, Max, Min, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -78,9 +78,31 @@ def home(request):
     return _keep_referral_cookie(request, response)
 
 
+SORT_OPTIONS = {
+    'relevancia': '-featured',
+    'menor_preco': 'price',
+    'maior_preco': '-price',
+    'mais_vendidos': '-sold_count',
+}
+
+
+def _decimal_param(request, name):
+    value = request.GET.get(name, '').strip()
+    if not value:
+        return None
+    try:
+        return Decimal(value)
+    except Exception:
+        return None
+
+
 def produtos(request):
     categoria = request.GET.get('categoria')
     busca = request.GET.get('busca', '').strip()
+    preco_min = _decimal_param(request, 'preco_min')
+    preco_max = _decimal_param(request, 'preco_max')
+    ordenar = request.GET.get('ordenar') if request.GET.get('ordenar') in SORT_OPTIONS else 'relevancia'
+
     qs = Product.objects.for_listing()
     if categoria == 'inclusivos':
         qs = qs.filter(is_inclusive=True)
@@ -92,8 +114,15 @@ def produtos(request):
             | Q(sku__icontains=busca)
             | Q(brand__name__icontains=busca)
         )
+    if preco_min is not None:
+        qs = qs.filter(price__gte=preco_min)
+    if preco_max is not None:
+        qs = qs.filter(price__lte=preco_max)
+    qs = qs.order_by(SORT_OPTIONS[ordenar], '-id')
+
     pagina = Paginator(qs, PRODUCTS_PER_PAGE).get_page(request.GET.get('page'))
     categorias = _categories_with_totals()
+    price_bounds = Product.objects.active().aggregate(lo=Min('price'), hi=Max('price'))
     return render(
         request,
         'store/produtos.html',
@@ -104,6 +133,11 @@ def produtos(request):
             'nav_categories': categorias,
             'categoria_atual': categoria,
             'busca': busca,
+            'preco_min': preco_min,
+            'preco_max': preco_max,
+            'preco_piso': price_bounds['lo'],
+            'preco_teto': price_bounds['hi'],
+            'ordenar': ordenar,
             'total_geral': Product.objects.active().count(),
             'total_inclusivos': Product.objects.inclusive().count(),
         },

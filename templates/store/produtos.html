@@ -1,4 +1,5 @@
 {% extends 'store/base.html' %}
+{% load static %}
 {% block title %}{% if busca %}"{{ busca }}" — Case See{% elif categoria_atual == 'inclusivos' %}Linha inclusiva — Case See{% else %}Catálogo — Case See{% endif %}{% endblock %}
 
 {% block content %}
@@ -16,30 +17,33 @@
           {{ page_obj.paginator.count }} produto{{ page_obj.paginator.count|pluralize }} · preços à vista no PIX
         </p>
       </div>
-      {% if busca or categoria_atual %}
+      {% if busca or categoria_atual or preco_min or preco_max %}
         <a class="btn" href="{% url 'store:produtos' %}">Limpar filtros</a>
       {% endif %}
     </div>
 
-    <div class="catalog-layout">
-      <aside class="cat-sidebar">
-        <span class="eyebrow">Categorias</span>
-        <nav aria-label="Categorias do catálogo">
-          <a class="cat-link{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}">
-            Todos os produtos <span class="c">{{ total_geral }}</span>
-          </a>
-          <a class="cat-link incl{% if categoria_atual == 'inclusivos' %} on{% endif %}" href="{% url 'store:produtos' %}?categoria=inclusivos">
-            Linha inclusiva <span class="c">{{ total_inclusivos }}</span>
-          </a>
-          <span class="cat-sep"></span>
-          {% for c in categories %}
-            <a class="cat-link{% if categoria_atual == c.slug %} on{% endif %}" href="{% url 'store:produtos' %}?categoria={{ c.slug }}">
-              {{ c.name }} <span class="c">{{ c.total }}</span>
-            </a>
-          {% endfor %}
-        </nav>
-      </aside>
+    <div class="filters-toolbar">
+      <button type="button" class="btn filters-btn" data-filters-toggle aria-expanded="false" aria-controls="filters-drawer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        Filtros{% if preco_min or preco_max %} <span class="pill num">1</span>{% endif %}
+      </button>
+      <span class="spacer"></span>
+      <form method="get" class="sort-form">
+        {% if busca %}<input type="hidden" name="busca" value="{{ busca }}">{% endif %}
+        {% if categoria_atual %}<input type="hidden" name="categoria" value="{{ categoria_atual }}">{% endif %}
+        {% if preco_min %}<input type="hidden" name="preco_min" value="{{ preco_min }}">{% endif %}
+        {% if preco_max %}<input type="hidden" name="preco_max" value="{{ preco_max }}">{% endif %}
+        <label for="ordenar-select" class="sr-only">Ordenar por</label>
+        <select id="ordenar-select" name="ordenar" onchange="this.form.submit()">
+          <option value="relevancia"{% if ordenar == 'relevancia' %} selected{% endif %}>Relevância</option>
+          <option value="menor_preco"{% if ordenar == 'menor_preco' %} selected{% endif %}>Menor preço</option>
+          <option value="maior_preco"{% if ordenar == 'maior_preco' %} selected{% endif %}>Maior preço</option>
+          <option value="mais_vendidos"{% if ordenar == 'mais_vendidos' %} selected{% endif %}>Mais vendidos</option>
+        </select>
+      </form>
+    </div>
 
+    <div class="catalog-layout catalog-layout-full">
       <div>
         {% if products %}
           <div class="catalog">
@@ -49,11 +53,11 @@
           {% if page_obj.has_other_pages %}
             <nav class="pager" aria-label="Paginação">
               {% if page_obj.has_previous %}
-                <a class="btn" href="?{% if busca %}busca={{ busca|urlencode }}&amp;{% endif %}{% if categoria_atual %}categoria={{ categoria_atual|urlencode }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Anterior</a>
+                <a class="btn" href="?{% if busca %}busca={{ busca|urlencode }}&amp;{% endif %}{% if categoria_atual %}categoria={{ categoria_atual|urlencode }}&amp;{% endif %}{% if preco_min %}preco_min={{ preco_min }}&amp;{% endif %}{% if preco_max %}preco_max={{ preco_max }}&amp;{% endif %}{% if ordenar %}ordenar={{ ordenar }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Anterior</a>
               {% endif %}
               <span class="page-info">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
               {% if page_obj.has_next %}
-                <a class="btn" href="?{% if busca %}busca={{ busca|urlencode }}&amp;{% endif %}{% if categoria_atual %}categoria={{ categoria_atual|urlencode }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Próxima</a>
+                <a class="btn" href="?{% if busca %}busca={{ busca|urlencode }}&amp;{% endif %}{% if categoria_atual %}categoria={{ categoria_atual|urlencode }}&amp;{% endif %}{% if preco_min %}preco_min={{ preco_min }}&amp;{% endif %}{% if preco_max %}preco_max={{ preco_max }}&amp;{% endif %}{% if ordenar %}ordenar={{ ordenar }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Próxima</a>
               {% endif %}
             </nav>
           {% endif %}
@@ -72,4 +76,40 @@
     </div>
   </div>
 </section>
+
+<div class="filters-backdrop" data-filters-backdrop hidden></div>
+<aside id="filters-drawer" class="filters-drawer" aria-label="Filtros">
+  <form method="get">
+    {% if busca %}<input type="hidden" name="busca" value="{{ busca }}">{% endif %}
+    {% if ordenar %}<input type="hidden" name="ordenar" value="{{ ordenar }}">{% endif %}
+    <div class="filters-head">
+      <b>Filtros</b>
+      <button type="button" class="filters-close" data-filters-close aria-label="Fechar filtros">✕</button>
+    </div>
+    <div class="filters-body">
+      <details class="filter-group" open>
+        <summary>Categoria</summary>
+        <div class="filter-options">
+          <label class="filter-radio"><input type="radio" name="categoria" value="" {% if not categoria_atual %}checked{% endif %}> Todos os produtos <span class="c">{{ total_geral }}</span></label>
+          <label class="filter-radio incl"><input type="radio" name="categoria" value="inclusivos" {% if categoria_atual == 'inclusivos' %}checked{% endif %}> Linha inclusiva <span class="c">{{ total_inclusivos }}</span></label>
+          {% for c in categories %}
+          <label class="filter-radio"><input type="radio" name="categoria" value="{{ c.slug }}" {% if categoria_atual == c.slug %}checked{% endif %}> {{ c.name }} <span class="c">{{ c.total }}</span></label>
+          {% endfor %}
+        </div>
+      </details>
+      <details class="filter-group" open>
+        <summary>Preço</summary>
+        <div class="filter-price">
+          <label>De<input type="number" name="preco_min" min="0" step="0.01" placeholder="{{ preco_piso|default:'0' }}" value="{{ preco_min|default:'' }}"></label>
+          <label>Até<input type="number" name="preco_max" min="0" step="0.01" placeholder="{{ preco_teto|default:'' }}" value="{{ preco_max|default:'' }}"></label>
+        </div>
+      </details>
+    </div>
+    <button type="submit" class="btn primary wide filters-submit">Ver resultados ({{ page_obj.paginator.count }})</button>
+  </form>
+</aside>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'store/js/filters.js' %}"></script>
 {% endblock %}
