@@ -1,4 +1,5 @@
 {% extends 'store/base.html' %}
+{% load static %}
 {% block title %}Indique e ganhe — Case See{% endblock %}
 
 {% block content %}
@@ -15,6 +16,7 @@
     <div class="panel" style="max-width:520px">
       <h3>Seu link de indicação</h3>
       <p class="muted" style="font-size:.88rem; word-break:break-all">{{ link }}</p>
+      <button type="button" class="btn primary" style="margin-top:12px" data-copy-link="{{ link }}">Copiar link</button>
       <p class="muted" style="margin-top:14px; font-size:.85rem">
         Código: <b>{{ referral.code }}</b> · {{ referral.uses }} indicaç{{ referral.uses|pluralize:"ão,ões" }} usada{{ referral.uses|pluralize }}
         {% if referral.reward_unlocked %}· <span style="color:var(--good); font-weight:700">recompensa liberada!</span>{% endif %}
@@ -31,4 +33,8 @@
     </form>
   {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'store/js/copy-link.js' %}"></script>
 {% endblock %}

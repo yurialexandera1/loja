@@ -582,6 +582,12 @@ main { flex: 1; }
 
 /* pedido confirmado */
 .receipt { max-width: 640px; margin: 48px auto; }
+.thank-you { text-align: center; padding: 12px 0 8px; }
+.thank-you-icon {
+  display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 999px;
+  background: var(--good-soft); color: var(--good); font-size: 1.6rem; font-weight: 800;
+  margin-bottom: 14px;
+}
 .receipt .code { font-family: var(--mono); font-size: 1.3rem; font-weight: 700; letter-spacing: .04em; }
 .status-pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 12px; font-size: .75rem; font-weight: 700; background: var(--warn-soft); color: var(--warn); }
 .status-pill.pago, .status-pill.entregue { background: var(--good-soft); color: var(--good); }
