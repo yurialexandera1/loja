@@ -1,4 +1,5 @@
 {% extends 'store/base.html' %}
+{% load static %}
 {% block title %}Meu pedido — Case See{% endblock %}
 
 {% block content %}
@@ -18,10 +19,10 @@
               <svg aria-hidden="true"><use href="#i-{{ line.icon|default:'package' }}"></use></svg>
             </a>
             <div class="info">
-              <a href="{% url 'store:produto' line.slug %}"><b>{{ line.name }}</b></a>
+              <a href="{% url 'store:produto' line.slug %}"><b>{{ line.name }}</b>{% if line.variant_label %} <span class="muted" style="font-weight:600">· {{ line.variant_label }}</span>{% endif %}</a>
               <span class="muted" style="font-size:.76rem">R$ {{ line.price|floatformat:2 }} a unidade · {{ line.stock }} em estoque</span>
             </div>
-            <form method="post" action="{% url 'store:update_cart' line.id %}" style="display:flex; gap:8px; align-items:center">
+            <form method="post" action="{% url 'store:update_cart' line.key %}" style="display:flex; gap:8px; align-items:center">
               {% csrf_token %}
               <input class="qty-input" type="number" name="qty" value="{{ line.qty }}" min="0" max="{{ line.stock }}" aria-label="Quantidade de {{ line.name }}">
               <button class="btn" type="submit" style="padding:9px 14px; font-size:.8rem">Atualizar</button>
@@ -50,6 +51,7 @@
   </div>
 {% else %}
   <div class="empty">
+    <svg width="48" height="48" aria-hidden="true" style="margin:0 auto 16px;color:var(--ink-3)"><use href="#i-package"></use></svg>
     <h2>Seu pedido está vazio</h2>
     <p>Escolha os produtos no catálogo e eles aparecem aqui.</p>
     <div class="hero-actions" style="justify-content:center">
@@ -60,35 +62,8 @@
 {% endif %}
 </div>
 
-<script>
-document.querySelectorAll('form[action*="update_cart"]').forEach(function(form) {
-  form.addEventListener('submit', function(e) {
-    var btn = form.querySelector('button[type="submit"]');
-    if (btn) { btn.textContent = 'Atualizando...'; btn.disabled = true; }
-  });
-});
-document.querySelectorAll('form[action*="add_cart"]').forEach(function(form) {
-  form.addEventListener('submit', function(e) {
-    var btn = form.querySelector('button[type="submit"]');
-    if (btn) { btn.textContent = 'Mandando...'; btn.disabled = true; }
-  });
-});
-</script>
+{% endblock %}
 
-
-<script>
-document.querySelectorAll('form[action*="update_cart"]').forEach(function(form) {
-  form.addEventListener('submit', function(e) {
-    var btn = form.querySelector('button[type="submit"]');
-    if (btn) { btn.textContent = 'Atualizando...'; btn.disabled = true; }
-  });
-});
-document.querySelectorAll('form[action*="add_cart"]').forEach(function(form) {
-  form.addEventListener('submit', function(e) {
-    var btn = form.querySelector('button[type="submit"]');
-    if (btn) { btn.textContent = 'Mandando...'; btn.disabled = true; }
-  });
-});
-</script>
-
+{% block extra_js %}
+<script src="{% static 'store/js/cart-form.js' %}"></script>
 {% endblock %}

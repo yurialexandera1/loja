@@ -42,6 +42,15 @@
   </div>
 </section>
 
+<section class="valueprops">
+  <div class="wrap valueprops-inner">
+    <div class="vprop"><svg aria-hidden="true"><use href="#i-tag"></use></svg><span>Estoque conferido</span></div>
+    <div class="vprop"><svg aria-hidden="true"><use href="#i-car"></use></svg><span>Retirada no Recreio</span></div>
+    <div class="vprop"><svg aria-hidden="true"><use href="#i-package"></use></svg><span>Envio para todo o Brasil</span></div>
+    <div class="vprop pix"><svg aria-hidden="true"><use href="#i-zap"></use></svg><span>PIX com desconto</span></div>
+  </div>
+</section>
+
 {% if categories %}
 <section class="band" style="padding-bottom:0">
   <div class="wrap">
@@ -86,15 +95,32 @@
 {% if inclusive_count %}
 <section class="band" style="padding-top:0">
   <div class="wrap">
-    <div class="strip">
+    <div class="strip strip-incl">
       <div>
-        <span class="eyebrow" style="color:var(--incl)">Aqui é inclusão também</span>
-        <h3>{{ inclusive_count }} produtos pensados para quem precisa ser visto — e respeitado.</h3>
-        <p>Cordões de identificação, abafadores de ruído e estampas. Categoria com espaço próprio na loja, não escondida no fim de uma lista.</p>
+        <span class="eyebrow" style="color:var(--accent-2)">Aqui é inclusão também</span>
+        <h3><span class="stat-num">{{ inclusive_count }}</span> produtos pensados para quem precisa ser visto — e respeitado.</h3>
+        <p>Cordões de identificação, abafadores de ruído e estampas. Categoria com espaço próprio na loja, não escondida no fim de uma lista. Todos são bem-vindos e merecem brilhar com a gente.</p>
       </div>
       <a class="btn tealsolid" href="{% url 'store:produtos' %}?categoria=inclusivos">Ver a linha completa</a>
     </div>
   </div>
 </section>
 {% endif %}
+
+<section class="band locator">
+  <div class="wrap locator-inner">
+    <div>
+      <span class="eyebrow">Feita no Rio</span>
+      <h2>Nasceu no Recreio dos Bandeirantes</h2>
+      <p class="lede">Loja física no Shopping Recreio dos Bandeirantes, atendimento de bairro, entrega para o Brasil inteiro — cada pedido sai com o mesmo cuidado de quem compra no balcão.</p>
+    </div>
+    <div class="locator-card">
+      <span class="dot"></span>
+      <div>
+        <b>Av. das Américas, 15500</b>
+        <span>Shopping Recreio dos Bandeirantes — Rio de Janeiro, RJ</span>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

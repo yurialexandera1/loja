@@ -26,13 +26,22 @@
         <p class="muted" style="font-size:.87rem; margin-bottom:12px">Sem cadastro. Você confirma tudo antes de enviar. Preenche apenas o necessário pra entrega.</p>
         <div class="fieldgrid">
           {% for field in form %}
+            {% if field.name != 'coupon_code' %}
             <div class="field{% if field.name in 'customer_name,address,city,zip,shipping_option' %} wide{% endif %}">
               <label for="{{ field.id_for_label }}">{{ field.label }}</label>
               {{ field }}
               {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
             </div>
+            {% endif %}
           {% endfor %}
         </div>
+        <details class="coupon-disclosure">
+          <summary>Tem um cupom?</summary>
+          <div class="field" style="margin-top:10px">
+            {{ form.coupon_code }}
+            {% if form.coupon_code.errors %}<ul class="errorlist">{% for e in form.coupon_code.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+        </details>
       </div>
 
       <div class="panel">

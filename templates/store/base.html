@@ -82,9 +82,20 @@
   </symbol>
 </svg>
 
+<div class="announce">
+  <div class="wrap announce-inner">
+    <span>Envio para todo o Brasil</span>
+    <span>Retirada no Recreio dos Bandeirantes</span>
+    <span>À vista no PIX com desconto</span>
+  </div>
+</div>
+
 <header class="storebar">
   <div class="wrap">
     <div class="sb-top">
+      <button type="button" class="nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
       <a href="{% url 'store:home' %}" class="logo">
         <img src="{% static 'store/img/logo.png' %}" alt="Case See" class="mk">
         <span><b>Case See</b><small>Acessórios</small></span>
@@ -96,17 +107,32 @@
         <input type="search" name="busca" value="{{ busca|default:'' }}" placeholder="Buscar por nome, código ou marca — ex: CB-105, AGOLD" aria-label="Buscar por nome, código ou marca">
       </form>
       <a href="{% url 'store:carrinho' %}" class="buy-btn">
-        Meu pedido{% if cart_count %} <span class="pill num">{{ cart_count }}</span>{% endif %}
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg>
+        <span class="buy-label">Meu pedido</span>{% if cart_count %} <span class="pill num">{{ cart_count }}</span>{% endif %}
       </a>
     </div>
     <nav class="navrow" aria-label="Navegação principal">
-      <a class="navlink{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}">Todos os produtos</a>
-      <a class="navlink incl{% if categoria_atual == 'inclusivos' %} on{% endif %}" href="{% url 'store:produtos' %}?categoria=inclusivos">Linha inclusiva</a>
+      <a class="navlink{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}"{% if not categoria_atual %} aria-current="page"{% endif %}>Todos os produtos</a>
+      {% for cat in nav_categories %}
+      <a class="navlink{% if categoria_atual == cat.slug %} on{% endif %}" href="{% url 'store:produtos' %}?categoria={{ cat.slug }}"{% if categoria_atual == cat.slug %} aria-current="page"{% endif %}>{{ cat.name }}</a>
+      {% endfor %}
+      <a class="navlink incl{% if categoria_atual == 'inclusivos' %} on{% endif %}" href="{% url 'store:produtos' %}?categoria=inclusivos"{% if categoria_atual == 'inclusivos' %} aria-current="page"{% endif %}>Linha inclusiva</a>
       <a class="navlink" href="{% url 'store:blog_lista' %}">Blog</a>
       <a class="navlink" href="{% url 'store:indicar' %}">Indique e ganhe</a>
     </nav>
   </div>
 </header>
+
+<div class="nav-backdrop" data-nav-backdrop hidden></div>
+<nav id="mobile-nav" class="mobile-nav" aria-label="Menu mobile">
+  <a class="navlink{% if not categoria_atual %} on{% endif %}" href="{% url 'store:produtos' %}">Todos os produtos</a>
+  {% for cat in nav_categories %}
+  <a class="navlink" href="{% url 'store:produtos' %}?categoria={{ cat.slug }}">{{ cat.name }}</a>
+  {% endfor %}
+  <a class="navlink incl" href="{% url 'store:produtos' %}?categoria=inclusivos">Linha inclusiva</a>
+  <a class="navlink" href="{% url 'store:blog_lista' %}">Blog</a>
+  <a class="navlink" href="{% url 'store:indicar' %}">Indique e ganhe</a>
+</nav>
 
 {% if messages %}
   <div class="wrap" style="padding-top:18px">
@@ -120,6 +146,10 @@
 
 <footer class="site-footer">
   <div class="wrap">
+    <a class="wa-strip" href="https://wa.me/5521995095642" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1s-.7.8-.8.9c-.2.2-.3.2-.5.1a6.5 6.5 0 0 1-3.3-2.9c-.2-.4.2-.4.5-1.2.1-.2 0-.4 0-.5L9 8.5c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.6 1.1 2.8.1.2 2 3 4.8 4.2 2.7 1.1 2.7.7 3.2.7a2.7 2.7 0 0 0 1.8-1.3c.2-.4.2-.7.2-.8-.1-.1-.3-.2-.5-.3z"/></svg>
+      <span>Fale com a gente no WhatsApp — dúvidas, estoque e retirada na loja</span>
+    </a>
     <div class="fgrid">
       <div>
         <div class="logo"><img src="{% static 'store/img/logo.png' %}" alt="Case See" class="mk"><span><b>Case See</b><small>Acessórios</small></span></div>
@@ -128,15 +158,15 @@
       <div>
         <span class="eyebrow">Fale conosco</span>
         <div class="flist">
-          <a href="https://wa.me/5521995095642">WhatsApp 55 21 99509-5642</a>
-          <a href="https://instagram.com/case__see">@case__see</a>
-          <a href="mailto:caseseeacessorios@gmail.com">caseseeacessorios@gmail.com</a>
+          <a href="https://wa.me/5521995095642"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>WhatsApp 55 21 99509-5642</a>
+          <a href="https://instagram.com/case__see"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>@case__see</a>
+          <a href="mailto:caseseeacessorios@gmail.com"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>caseseeacessorios@gmail.com</a>
         </div>
       </div>
       <div>
         <span class="eyebrow">Loja física</span>
         <div class="flist">
-          <span>Av. das Américas, 15500</span>
+          <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>Av. das Américas, 15500</span>
           <span>Shopping Recreio dos Bandeirantes</span>
           <span>Rio de Janeiro — RJ</span>
         </div>
@@ -154,69 +184,20 @@
     </div>
     <div class="fbottom">
       <span>© Case See Acessórios</span>
-      <span>PIX · Cartão · Retirada na loja</span>
+      <span class="pay-row">
+        <span class="pay-chip pix">PIX</span>
+        <span class="pay-chip">Cartão</span>
+        <span>Retirada na loja</span>
+      </span>
     </div>
   </div>
 </footer>
 
-<script>
-(function() {
-  var container = document.getElementById('toast-container');
-  if (!container) return;
-  var timers = {};
-  window.showToast = function(message, type) {
-    type = type || 'info';
-    var existing = container.querySelector('.toast-' + type);
-    if (existing) {
-      existing.textContent = message;
-      existing.classList.remove('toast-hidden');
-      clearTimeout(timers[type]);
-    } else {
-      var el = document.createElement('div');
-      el.className = 'toast toast-' + type;
-      el.textContent = message;
-      container.appendChild(el);
-    }
-    timers[type] = setTimeout(function() {
-      var e = container.querySelector('.toast-' + type);
-      if (e) e.classList.add('toast-hidden');
-    }, 3000);
-  };
-})();
-</script>
-
-
 <div id="toast-container" aria-live="polite" aria-atomic="true" class="toast-container"></div>
 
-
-<script>
-(function() {
-  var container = document.getElementById('toast-container');
-  if (!container) return;
-  var timers = {};
-  window.showToast = function(message, type) {
-    type = type || 'info';
-    var existing = container.querySelector('.toast-' + type);
-    if (existing) {
-      existing.textContent = message;
-      existing.classList.remove('toast-hidden');
-      clearTimeout(timers[type]);
-    } else {
-      var el = document.createElement('div');
-      el.className = 'toast toast-' + type;
-      el.textContent = message;
-      container.appendChild(el);
-    }
-    timers[type] = setTimeout(function() {
-      var e = container.querySelector('.toast-' + type);
-      if (e) e.classList.add('toast-hidden');
-    }, 3000);
-  };
-})();
-</script>
-
-
-<div id="toast-container" aria-live="polite" aria-atomic="true" class="toast-container"></div>
+<script src="{% static 'store/js/toast.js' %}"></script>
+<script src="{% static 'store/js/nav.js' %}"></script>
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>

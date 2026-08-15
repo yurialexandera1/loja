@@ -5,16 +5,16 @@
 
 @font-face {
   font-family: "Fraunces Var";
-  src: url("../fonts/fraunces-variable.woff2") format("woff2-variations"),
-       url("../fonts/fraunces-variable.woff2") format("woff2");
+  src: url("../fonts/fraunces-variable.069cb90e11a3.woff2") format("woff2-variations"),
+       url("../fonts/fraunces-variable.069cb90e11a3.woff2") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Work Sans Var";
-  src: url("../fonts/worksans-variable.woff2") format("woff2-variations"),
-       url("../fonts/worksans-variable.woff2") format("woff2");
+  src: url("../fonts/worksans-variable.97b33529e13b.woff2") format("woff2-variations"),
+       url("../fonts/worksans-variable.97b33529e13b.woff2") format("woff2");
   font-weight: 300 700;
   font-style: normal;
   font-display: swap;
@@ -441,7 +441,7 @@ main { flex: 1; }
   position: absolute; top: 12px; left: 12px; font-size: .62rem; font-weight: 750; letter-spacing: .09em;
   text-transform: uppercase; padding: 5px 9px; border-radius: 6px; background: var(--ink); color: var(--ground);
 }
-.tag.incl { background: var(--accent-2); color: #fff; }
+.tag.incl { background: var(--incl); color: #fff; }
 .tag.low { background: var(--warn-soft); color: var(--warn); }
 .tag.off { background: var(--accent); color: var(--accent-ink); }
 .tag.out { background: var(--surface-2); color: var(--crit); }
@@ -582,12 +582,6 @@ main { flex: 1; }
 
 /* pedido confirmado */
 .receipt { max-width: 640px; margin: 48px auto; }
-.thank-you { text-align: center; padding: 12px 0 8px; }
-.thank-you-icon {
-  display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 999px;
-  background: var(--good-soft); color: var(--good); font-size: 1.6rem; font-weight: 800;
-  margin-bottom: 14px;
-}
 .receipt .code { font-family: var(--mono); font-size: 1.3rem; font-weight: 700; letter-spacing: .04em; }
 .status-pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 12px; font-size: .75rem; font-weight: 700; background: var(--warn-soft); color: var(--warn); }
 .status-pill.pago, .status-pill.entregue { background: var(--good-soft); color: var(--good); }

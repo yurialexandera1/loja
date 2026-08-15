@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal
 
 from django.contrib import messages
@@ -120,6 +121,7 @@ def produto_detalhe(request, slug):
         .filter(category=product.category)
         .exclude(id=product.id)[:RELATED_LIMIT]
     )
+    variants = list(product.variants.all())
     response = render(
         request,
         'store/produto.html',
@@ -130,6 +132,9 @@ def produto_detalhe(request, slug):
             'review_form': ReviewForm(),
             'nav_categories': _categories_with_totals(),
             'categoria_atual': product.category.slug,
+            'variants_json': json.dumps([
+                {'id': v.id, 'label': v.label, 'stock': v.stock} for v in variants
+            ]),
         },
     )
     return _keep_referral_cookie(request, response)
@@ -170,15 +175,18 @@ def carrinho(request):
 def add_cart(request, slug):
     product = get_object_or_404(Product, slug=slug, active=True)
     qty = request.POST.get('qty', 1)
-    cart = add_to_cart(request, product.id, qty)
+    variant_id = request.POST.get('variant_id') or None
+    if variant_id and not product.variants.filter(id=variant_id).exists():
+        variant_id = None
+    cart = add_to_cart(request, product.id, qty, variant_id=variant_id)
     response = redirect('store:carrinho')
     set_cart(response, cart)
     return response
 
 
 @require_POST
-def update_cart(request, product_id):
-    cart = set_cart_qty(request, product_id, request.POST.get('qty', 0))
+def update_cart(request, cart_key):
+    cart = set_cart_qty(request, cart_key, request.POST.get('qty', 0))
     response = redirect('store:carrinho')
     set_cart(response, cart)
     return response
