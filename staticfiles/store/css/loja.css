@@ -195,7 +195,7 @@ main { flex: 1; }
   box-shadow: 0 2px 8px rgba(23, 18, 16, .12);
   border: 1px solid var(--line-soft);
 }
-.logo b { font-family: var(--display); font-size: 1.2rem; font-weight: 800; letter-spacing: -.045em; display: block; }
+.logo b { font-family: var(--display); font-size: 1.35rem; font-weight: 800; letter-spacing: -.045em; display: block; }
 .logo small { font-size: .65rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
 .searchbox {
   flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; background: var(--surface);
@@ -215,13 +215,14 @@ main { flex: 1; }
 }
 .buy-btn:hover { background: var(--accent-deep); box-shadow: 0 6px 16px rgba(166, 58, 17, .3); transform: translateY(-2px); }
 .buy-btn .pill { background: rgba(0, 0, 0, .15); border-radius: 999px; padding: 2px 8px; font-size: .75rem; font-weight: 800; }
-.navrow { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.navrow { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
 .navrow::-webkit-scrollbar { display: none; }
-.navlink { padding: 12px 16px; font-size: .85rem; font-weight: 650; color: var(--ink-2); border-bottom: 2.5px solid transparent; white-space: nowrap; transition: all .2s var(--ease); }
-.navlink:hover { color: var(--ink); }
-.navlink.on { color: var(--accent); border-bottom-color: var(--accent); }
+.navlink { padding: 8px 14px; font-size: .84rem; font-weight: 650; color: var(--ink-2); white-space: nowrap; transition: all .2s var(--ease); border-radius: 999px; }
+.navlink:hover { color: var(--ink); background: var(--surface); }
+.navlink.on { color: var(--ground); background: var(--ink); }
 .navlink.incl { color: var(--accent-2); }
-.navlink.incl.on { border-bottom-color: var(--accent-2); }
+.navlink.incl:hover { background: var(--accent-2-soft); }
+.navlink.incl.on { background: var(--accent-2); color: #fff; }
 .buy-btn .buy-label { display: inline; }
 
 /* botoes */
