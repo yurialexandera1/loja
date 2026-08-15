@@ -5,16 +5,16 @@
 
 @font-face {
   font-family: "Fraunces Var";
-  src: url("../fonts/fraunces-variable.woff2") format("woff2-variations"),
-       url("../fonts/fraunces-variable.woff2") format("woff2");
+  src: url("../fonts/fraunces-variable.069cb90e11a3.woff2") format("woff2-variations"),
+       url("../fonts/fraunces-variable.069cb90e11a3.woff2") format("woff2");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Work Sans Var";
-  src: url("../fonts/worksans-variable.woff2") format("woff2-variations"),
-       url("../fonts/worksans-variable.woff2") format("woff2");
+  src: url("../fonts/worksans-variable.97b33529e13b.woff2") format("woff2-variations"),
+       url("../fonts/worksans-variable.97b33529e13b.woff2") format("woff2");
   font-weight: 300 700;
   font-style: normal;
   font-display: swap;
@@ -114,6 +114,7 @@
   border: 0;
 }
 
+html { overflow-x: hidden; }
 body {
   margin: 0;
   background: var(--ground);
@@ -122,6 +123,7 @@ body {
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   min-height: 100vh;

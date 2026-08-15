@@ -416,7 +416,8 @@ main { flex: 1; }
 .catalog-layout-full { display: block; }
 
 /* barra lateral de categorias — legado, mantido para paineis internos */
-.catalog-layout { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; }
+.catalog-layout { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; min-width: 0; }
+.catalog-layout > * { min-width: 0; }
 .cat-sidebar { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 10px; }
 .cat-sidebar nav { display: flex; flex-direction: column; gap: 2px; }
 .sidebar-price .filter-price { margin-top: 10px; }
@@ -727,6 +728,7 @@ main { flex: 1; }
 
 /* painel */
 .panel-shell { min-height: 100vh; display: grid; grid-template-columns: 220px 1fr; background: var(--ground); }
+.panel-shell > * { min-width: 0; }
 .panel-side { background: var(--surface); border-right: 1px solid var(--line); padding: 20px 14px; display: flex; flex-direction: column; gap: 4px; }
 .panel-side .who { display: flex; gap: 10px; align-items: center; padding: 6px 8px 18px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
 .panel-side .who .av { width: 34px; height: 34px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-weight: 750; font-size: .8rem; flex: none; }
