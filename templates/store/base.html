@@ -96,7 +96,7 @@
         <button type="submit" aria-label="Buscar">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
         </button>
-        <input type="search" name="busca" value="{{ busca|default:'' }}" placeholder="Buscar por nome, código ou marca — ex: CB-105, AGOLD" aria-label="Buscar por nome, código ou marca">
+        <input type="search" name="busca" value="{{ busca|default:'' }}" placeholder="Buscar por nome, código ou marca" aria-label="Buscar por nome, código ou marca">
       </form>
       <a href="{% url 'store:carrinho' %}" class="buy-btn">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg>
